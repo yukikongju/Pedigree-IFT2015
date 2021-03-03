@@ -1,6 +1,6 @@
 package pedigree;
 
-public abstract class Event {
+public abstract class Event implements Comparable<Event> {
     private Sim sim;
     private double time;
 
@@ -18,5 +18,11 @@ public abstract class Event {
     public double getTime() {
         return time;
     }
+
+    @Override
+    public int compareTo(Event t) {
+        return Double.compare(this.time, t.getTime());
+    }
+    
     
 }
