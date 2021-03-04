@@ -3,23 +3,21 @@ package pedigree;
 
 import java.util.ArrayList;
 
-
 public class PQ <T extends Comparable<T>>{
     
     // Right now: ordinary PQ O(log n) insert and delete
     // TODO: priority queue with quick find 
     
-    private ArrayList<T> heap; // heap[i] = ith element on pq
-    private int size; // number of elements on pq
+    private ArrayList<T> heap; // heap.get(i) = ith element on pq
     
-//    public PQ(int capacity){
-//        heap = new ArrayList<>(capacity);
-//    }
-
     public PQ() {
         heap = new ArrayList<>();
     }
-    
+
+    public ArrayList<T> getHeap() { // to delete, only for test purposes
+        return heap;
+    }
+   
     public boolean isEmpty(){
         return size() == 0;
     }
@@ -28,9 +26,9 @@ public class PQ <T extends Comparable<T>>{
         return heap.size();
     }
     
-    private void swim(int k){ // to test
+    private void swim(int k){ 
         int parent = (k-1)/2;
-        while(k > 0 && less(k, parent)){
+        while(k > 0 && less(k, parent)){ // SOLVED: i think it never gets in bc we have an inequality
             swap(parent, k);
             k = parent;
             parent = (k - 1)/2;
@@ -53,10 +51,12 @@ public class PQ <T extends Comparable<T>>{
         }
     }
     
-    private boolean less(int i, int j){
+    private boolean less(int i, int j){ // to test (it had problem beforehand)
         T element1 = heap.get(i);
         T element2 = heap.get(j);
-        return element1.compareTo(element2) <= 0;
+//        return element1.compareTo(element2) <= 0;
+        return element1.compareTo(element2) < 0;
+
     }
 
     private void swap(int i, int j) { // to test
@@ -64,7 +64,6 @@ public class PQ <T extends Comparable<T>>{
         T element2 = heap.get(i);
         heap.set(i, element1);
         heap.set(j, element2);
-
     }
     
     public T deleteMin(){ // to test
@@ -86,18 +85,20 @@ public class PQ <T extends Comparable<T>>{
         return firstElement;
     }
     
-   public void insert(T elem){ // to test
+   public void insert(T elem){ // to test : looks ok
        if(elem == null) throw new IllegalArgumentException();
        heap.add(elem);
        int indexOfLast = size() -1;
-       swim(indexOfLast);
+       swim(indexOfLast); 
    }
 
+   public void contains(T elem){ // TODO: implement binary search
+       
+   }
+   
     @Override
     public String toString() {
         return heap.toString();
     }
-    
-   
     
 }
