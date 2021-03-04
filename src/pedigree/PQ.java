@@ -21,7 +21,7 @@ public class PQ <T extends Comparable<T>>{
     }
     
     public boolean isEmpty(){
-        return size == 0;
+        return size() == 0;
     }
     
     public int size(){
