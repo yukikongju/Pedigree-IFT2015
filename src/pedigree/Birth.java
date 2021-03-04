@@ -17,7 +17,7 @@ public class Birth extends Event {
 
     @Override
     public void simulate() { // TODO
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Getting out of the womb");
     }
-    
+
 }

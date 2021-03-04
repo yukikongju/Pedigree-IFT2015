@@ -137,7 +137,7 @@ public class AgeModel
     /**
      * A random value with the specified lifespan distribution.
      * 
-     * @param RND Psudorandom number generator for uniform[0,1]
+     * @param RND Pseudorandom number generator for uniform[0,1]
      * 
      * @return a random value distributed by Gomperz-Makeham
      */
@@ -167,7 +167,7 @@ public class AgeModel
         if (arg_idx<args.length)
             scale = Double.parseDouble(args[arg_idx++]);
         
-        AgeModel M= new AgeModel(acc, dth, scale);
+        AgeModel M = new AgeModel(acc, dth, scale);
 
         Random RND = new Random();
         

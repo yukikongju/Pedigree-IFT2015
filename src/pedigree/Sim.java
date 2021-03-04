@@ -52,7 +52,7 @@ public class Sim implements Comparable<Sim>
     private Sex sex;
     
     protected Sim(Sim mother, Sim father, double birth, Sex sex)
-    {
+    { 
         this.mother = mother;
         this.father = father;
         
@@ -104,10 +104,10 @@ public class Sim implements Comparable<Sim>
                 && mate.getMate()==this;
     }
     
-    public void setDeath(double death)
-    {
-        this.deathtime = death;
-    }
+//    public void setDeath(double death) //duplicated in csuros code
+//    {
+//        this.deathtime = death;
+//    }
     
     public Sex getSex()
     {
