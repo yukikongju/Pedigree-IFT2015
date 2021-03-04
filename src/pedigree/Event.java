@@ -1,12 +1,13 @@
 package pedigree;
 
 public abstract class Event implements Comparable<Event> {
+    
     private Sim sim;
-    private double time;
+    private double scheduledTime;
 
     public Event(Sim sim, double time) {
         this.sim = sim;
-        this.time = time;
+        this.scheduledTime = time;
     }
     
     public abstract void simulate();
@@ -15,14 +16,21 @@ public abstract class Event implements Comparable<Event> {
         return sim;
     }
 
-    public double getTime() {
-        return time;
+    public double getScheduledTime() {
+        return scheduledTime;
     }
 
     @Override
-    public int compareTo(Event t) {
-        return Double.compare(this.time, t.getTime());
+    public int compareTo(Event t) { // verify if it works
+        return Double.compare(this.scheduledTime, t.getScheduledTime());
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getName() + " of " + sim.getSex() +
+                " scheduled at time: " + this.getScheduledTime();
+    }
+
     
     
 }
