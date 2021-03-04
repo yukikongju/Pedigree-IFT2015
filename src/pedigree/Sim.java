@@ -109,6 +109,14 @@ public class Sim implements Comparable<Sim>
 //        this.deathtime = death;
 //    }
     
+    public boolean isMale(){
+        return Sex.M == getSex();
+    }
+    
+    public boolean isFemale(){
+        return Sex.F == getSex();
+    }
+    
     public Sex getSex()
     {
         return sex;
