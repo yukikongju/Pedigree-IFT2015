@@ -14,10 +14,6 @@ public class PQ <T extends Comparable<T>>{
         heap = new ArrayList<>();
     }
 
-    public ArrayList<T> getHeap() { // to delete, only for test purposes
-        return heap;
-    }
-   
     public boolean isEmpty(){
         return size() == 0;
     }
