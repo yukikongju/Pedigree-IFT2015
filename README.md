@@ -4,10 +4,28 @@ Devoir 2 dans le cadre du cours IFT2015 H2021
 
 ## Table des matières
 
-1. [Prerequisites](#prerequisites)
-2. [Usage](#usage)
-3. [Ressources](#ressources)
+1. [Motivation](#motivation)
+2. [Prerequisites](#prerequisites)
+3. [Usage](#usage)
+4. [Ressources](#ressources)
 
+## Motivation
+
+We want to simulate the population growth over the last 2000 years
+
+To do so, we have to simulate three types of events:
+- Birth
+- Death
+- Reproduction
+
+The death rate is given by the Gompertz-Makeham law that takes into account 2 parameters:
+- Natural Death: Mortality rate that doubles every 8 years
+- Accidental Death: constant rate fixed at 1%/year
+
+The reproduction rules follows the Exponential Law with a fixed rate R (Poisson Process).
+The women can reproduce from age 16 to 50, whereas men can do from age 16 to 73.
+Like real life, our sims can cheat on their spouse, but they often prefer to stay with
+their current mate.
 
 ## Prerequisites
 
