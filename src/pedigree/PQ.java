@@ -24,7 +24,7 @@ public class PQ <T extends Comparable<T>>{
     
     private void swim(int k){ 
         int parent = (k-1)/2;
-        while(k > 0 && less(k, parent)){ // SOLVED: i think it never gets in bc we have an inequality
+        while(k > 0 && less(k, parent)){ // SOLVED: never gets in bc we have an inequality
             swap(parent, k);
             k = parent;
             parent = (k - 1)/2;
@@ -66,26 +66,26 @@ public class PQ <T extends Comparable<T>>{
         if(isEmpty()) return null;
         
         int indexOfLast = size() - 1;
-        T firstElement = heap.get(0);
+        T minElement = heap.get(0);
         
         swap(0, indexOfLast);
-        heap.remove(indexOfLast);
+        heap.remove(indexOfLast); // remove the last element
         
-        if(0 == indexOfLast) return firstElement; // 
+        if(0 == indexOfLast) return minElement; // redundat?
         
         // find the position of the initial last element
         T elem = heap.get(0);
         sink(0); // try sinking the item
         if(heap.get(0).equals(elem)) swim(0); // try swimming if sinking did not work
         
-        return firstElement;
+        return minElement;
     }
     
    public void insert(T elem){ // to test : looks ok
        if(elem == null) throw new IllegalArgumentException();
        heap.add(elem);
-       int indexOfLast = size() -1;
-       swim(indexOfLast); 
+//       int indexOfLast = size() -1;
+       swim(size()-1); // swim at the last index 
    }
 
    public void contains(T elem){ // TODO: implement binary search
