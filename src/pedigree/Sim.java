@@ -134,6 +134,8 @@ public class Sim implements Comparable<Sim>
         return deathtime;
     }
     
+    
+    
     public void setDeathTime(double death_time)
     {
         this.deathtime = death_time;

@@ -20,6 +20,10 @@ public class Event implements Comparable<Event> {
     
 //    public abstract void simulate();
 
+    public EventType getEventType() {
+        return eventType;
+    }
+    
     public Sim getSim() {
         return sim;
     }
