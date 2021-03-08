@@ -20,9 +20,10 @@ public class Simulation {
     PQ<Event> eventQ;
     AgeModel ageModel;
 
-    // add ancestors males and females to a hashmap to facilitate mating 
-//    HashMap<Sim> aieux;
-//    HashMap<Sim> aieules;
+    //    add ancestors males and females to a hashmap to facilitate mating 
+    //    HashMap<Sim> aieux;
+    //    HashMap<Sim> aieules;
+    //    HashMap<Sim> population;
 
     public Simulation() {
         eventQ = new PQ<>();
@@ -33,8 +34,9 @@ public class Simulation {
     public void simulate(int n, double Tmax){
         // generate first generation
         for(int i = 0; i<n; i++){
-            Sim fondateur = new Sim(generateSex(random));
+            Sim fondateur = new Sim(null, null, 0); // founder Sim 
             Event E = new Event(fondateur, 0, Event.EventType.BIRTH);
+            System.out.println(fondateur);
             eventQ.insert(E);
         }
         
@@ -42,8 +44,7 @@ public class Simulation {
         while(!eventQ.isEmpty()){
             Event E = (Event) eventQ.deleteMin();
             if(E.getScheduledTime() > Tmax) break; // arrêter à Tmax 
-            //            if(E.getSim().getDeathTime() > E.getScheduledTime()){ // si le sim n'est pas mort} // no need to check
-            switch (E.getEventType()) { // NOTE: eventType shoudl never be null, so we don't have to check if it's null
+            switch (E.getEventType()) { // NOTE: eventType should never be null, so we don't have to check if it's null
                 case BIRTH:
                     birth(E);
                     break;
@@ -62,12 +63,13 @@ public class Simulation {
         }
     }
     
-    private Sim.Sex generateSex(Random random){
-       int temp = random.nextInt(2); // generate 0 or 1
-       return Sim.Sex.values()[temp];
-    }
+//    private Sim.Sex generateSex(Random random){
+//       int temp = random.nextInt(2); // generate 0 or 1
+//       return Sim.Sex.values()[temp];
+//    }
 
     private void birth(Event E) {
+//       double lifeLength = ageModel.randomAge(random);
     }
 
     private void death(Event E) {
