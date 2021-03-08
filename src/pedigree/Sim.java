@@ -51,7 +51,7 @@ public class Sim implements Comparable<Sim>
     
     private Sex sex;
     
-    protected Sim(Sim mother, Sim father, double birth, Sex sex)
+    protected Sim(Sim mother, Sim father, double birth, Sex sex) 
     { 
         this.mother = mother;
         this.father = father;
@@ -63,6 +63,8 @@ public class Sim implements Comparable<Sim>
         
         this.sim_ident = NEXT_SIM_IDX++;
     }
+    
+    
     
     /**
      * A founding Sim.
@@ -138,7 +140,6 @@ public class Sim implements Comparable<Sim>
     }
     
     /**
-     * 
      * @return null for a founder
      */
     public Sim getMother()
@@ -147,7 +148,6 @@ public class Sim implements Comparable<Sim>
     }
     
     /**
-     * 
      * @return null for a founder
      */
     public Sim getFather()
