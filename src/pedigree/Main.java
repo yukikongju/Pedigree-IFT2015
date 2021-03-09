@@ -8,7 +8,7 @@ public class Main {
      */
     public static void main(String[] args) {
        Simulation simulation = new Simulation();
-       simulation.simulate(10, 2000);
+       simulation.simulate(5, 2000);
     }
 
 }

@@ -66,6 +66,7 @@ public class PQ <T extends Comparable<T>>{
         swim(size++);
     }
 
+    // O(log n)
     private void swim(int index) {
         int parent = getParentIndex(index);
         while(index > 0 && less(index, parent)){
@@ -79,6 +80,7 @@ public class PQ <T extends Comparable<T>>{
         return (index - 1)/2;
     }
     
+    // O(log n)
     private void sink(int index){
         int child = getIndexMinChild(index);
         while(child != 0 && more(index, child)){

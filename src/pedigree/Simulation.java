@@ -11,10 +11,11 @@ public class Simulation {
    public final Random RND; 
    public final double REPRODUCTION_RATE;
     
-    PQ<Event> eventQ;
-    AgeModel ageModel;
+    private PQ<Event> eventQ; // PQ<Event> is sorted cronologically by death 
+    private PQ<Sim> population; // PQ<Sim> is sorted bronologically by death
+    private AgeModel ageModel;
     
-    ArrayList<Sim> males; // TODO: change Data Structures?
+    private ArrayList<Sim> males; // TODO: change Data Structures?
     
     //    add ancestors males and females to a hashmap to facilitate mating 
     //    HashMap<Sim> aieux;
@@ -23,12 +24,13 @@ public class Simulation {
 
     public Simulation() {
         eventQ = new PQ<>();
+        population = new PQ<>();
         ageModel = new AgeModel();
         males = new ArrayList<>();
         RND = new Random(); // TODO: Fix Reproduction rate
 //        REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F);
         REPRODUCTION_RATE = ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F);
-        System.out.println(REPRODUCTION_RATE);
+//        System.out.println(REPRODUCTION_RATE);
     }
 
     public void simulate(int n, double Tmax){
@@ -69,11 +71,12 @@ public class Simulation {
 
     private void birth(Event E) {
        // scheduling death
-        System.out.println("bi");
        double lifeLength = ageModel.randomAge(RND); // lifespan of a Sim
        E.getSim().setDeathTime(E.getScheduledTime() + lifeLength);
        Event death = new Event(E.getSim(), E.getScheduledTime() + lifeLength, Event.EventType.DEATH);
        eventQ.insert(death); 
+       
+//        System.out.println(E.getSim());
        
        // scheduling reproduction
        if (E.getSim().getSex() == Sim.Sex.F){ // TODO: schedule reproduction if sim is a female (how many children does the woman birth)
@@ -88,11 +91,13 @@ public class Simulation {
        if(E.getSim().getSex() == Sim.Sex.M){
            males.add(E.getSim());
        }
+       
+       // adding Sim to population active
+       population.insert(E.getSim());
     }
 
     private void death(Event E) {
-        // TODO: remove sim from population and add it to dead-people
-//        System.out.println("dead");
+        population.deleteMin();         // remove sim from population active
     }
 
     private void reproduction(Event E) { // TODO: schedule bebe every time mom gets pregnant?
@@ -127,7 +132,8 @@ public class Simulation {
         return father;
     }
 
-    private Sim getRandomMate() { // PROBLEM: we get caucht up in an infinite loop when there is no males in the population
+    private Sim getRandomMate() { // PROBLEM 1: we get caucht up in an infinite loop when there is no males in the population
+        if(males.isEmpty()) System.out.println("NO MALES"); // PROBLEM 2: we still get caught up in an infinite loop from time to time
         int index = RND.nextInt(males.size()); 
 //        System.out.println(index);
 //        System.out.println("num males " + males.size());
