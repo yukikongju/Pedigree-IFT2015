@@ -82,7 +82,6 @@ public class PQ <T extends Comparable<T>>{
     private void sink(int index){
         int child = getIndexMinChild(index);
         while(child != 0 && more(index, child)){
-//        while(child < size() && more(index, child)){
             swap(child, index);
             index = child;
             child = getIndexMinChild(index);
@@ -105,7 +104,10 @@ public class PQ <T extends Comparable<T>>{
         if(size() > 0){ // TOFIX: redundant
             swap(indexOfLastElement, 0);
             heap[indexOfLastElement] = null;
-            size--; // TODO: resize
+            size--; 
+            if(size == heap.length/4){ // resizing dynamic array when quarter full
+                resize(heap.length/2);
+            }
             sink(0);
         }
         return topElement;
