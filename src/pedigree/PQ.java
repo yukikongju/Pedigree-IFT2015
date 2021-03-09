@@ -2,99 +2,128 @@
 package pedigree;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PQ <T extends Comparable<T>>{
     
     // Right now: ordinary PQ O(log n) insert and delete
     // TODO: priority queue with quick find 
     
-    private ArrayList<T> heap; // heap.get(i) = ith element on pq
+    T[] heap;
+    int size = 0; // length the user see
+    public final int STARTING_CAPACITY = 2;
     
-    public PQ() {
-        heap = new ArrayList<>();
+    public PQ(){
+        heap =  (T[]) new Comparable[STARTING_CAPACITY];
     }
-
+    
+    public int size(){
+        return size;
+    }
+    
     public boolean isEmpty(){
         return size() == 0;
     }
     
-    public int size(){
-        return heap.size();
+    public void insert(T elem){
+        if(size() == heap.length){
+            resize(heap.length * 2);
+        }
+        
+        heap[size++] = elem;
+        swim(size);
+        
+//        swim(elem, size);
+//        size++;
     }
+
+    /**
+     * Copies old array in new Array with new capacity
+     * 
+     * @param newCapacity capacity the array should be resized to
+     */
+    private void resize(int newCapacity) {
+        T[] temp = (T[]) new Comparable[newCapacity];
+        for(int i = 0; i < size; i++){
+            temp[i] = heap[i];
+        }
+        heap = temp;
+    }
+
+//    private void swim(T elem, int index) {
+//        int p = getIndexParent(index);
+//        while(p != 0 && more(p, index)){
+//            heap[index] = heap[p];
+//            index = p;
+//            p = getIndexParent(index);
+//        }
+//        heap[index] = elem;
+//    }
     
-    private void swim(int k){ 
-        int parent = (k-1)/2;
-        while(k > 0 && less(k, parent)){ // SOLVED: never gets in bc we have an inequality
-            swap(parent, k);
-            k = parent;
-            parent = (k - 1)/2;
+    private void swim(int index){
+        int p = getIndexParent(index);
+        while(p != 0 && more(p, index)){
+            swap(p, index);
+            index = p;
+            p = getIndexParent(index);
         }
     }
+
+    private void sink(T elem, int index){
+        int c = getIndexMinChild(index);
+    }
     
-    private void sink(int k){ // to test
-        int heapSize = size();
-        while(true){
-            int left = 2 * k + 1; // Left  node
-            int right = 2 * k + 2; // Right node
-           
-            int smallest = left; // Assume left is the smallest node of the two children
-            if (right < heapSize && less(right, left)) smallest = right; // assign right child to smallest if it is smaller than left 
+    private int getIndexParent(int index) {
+        return (index - 1)/2;
+    }
 
-            if (left >= heapSize || less(k, smallest)) break; //  stop if we cannot sink k anymore
+    private boolean more(int i, int j) {
+       return heap[i].compareTo(heap[j]) > 0;
+    }
+    
+    private boolean less(int i, int j){
+        return heap[i].compareTo(heap[j]) < 0;
+    }
 
-            swap(smallest, k);
-            k = smallest;
+    private int getIndexMinChild(int index) {
+//        int left = index *2 + 1;
+//        int right = (index * 2) + 2;
+//        int smallest = left;
+//        if(smallest > size -1) return 0; // if child doesn't exist, return 0
+//        if(right <= size -1 && less(right, smallest)) smallest = right; // check if right is smaller than left
+//        return smallest;
+
+int j = 0; //si aucun enfant retourner 0
+        int c1 = (index * 2) + 1;
+        int c2 = (index * 2) + 2; //calculer la position des enfants de idx
+        if (c1 <= size - 1) { //si enfant c1 existe
+            j = c1;
+            if (c2 <= size - 1 && heap[c2].compareTo(heap[c1]) < 0) { //si enfant 2 existe et est plus petit que enfant 1
+                j = c2;
+            }
         }
-    }
-    
-    private boolean less(int i, int j){ // to test (it had problem beforehand)
-        T element1 = heap.get(i);
-        T element2 = heap.get(j);
-//        return element1.compareTo(element2) <= 0;
-        return element1.compareTo(element2) < 0;
-
+        return j;
     }
 
-    private void swap(int i, int j) { // to test
-        T element1 = heap.get(i);
-        T element2 = heap.get(i);
-        heap.set(i, element1);
-        heap.set(j, element2);
+    public T deleteMin(){ // TODO
+        return null;
     }
-    
-    public T deleteMin(){ // to test
-        if(isEmpty()) return null;
-        
-        int indexOfLast = size() - 1;
-        T minElement = heap.get(0);
-        
-        swap(0, indexOfLast);
-        heap.remove(indexOfLast); // remove the last element
-        
-        if(0 == indexOfLast) return minElement; // redundat?
-        
-        // find the position of the initial last element
-        T elem = heap.get(0);
-        sink(0); // try sinking the item
-        if(heap.get(0).equals(elem)) swim(0); // try swimming if sinking did not work
-        
-        return minElement;
-    }
-    
-   public void insert(T elem){ // to test : looks ok
-       if(elem == null) throw new IllegalArgumentException();
-       heap.add(elem);
-//       int indexOfLast = size() -1;
-       swim(size()-1); // swim at the last index 
-   }
 
-   public void contains(T elem){ // TODO: implement binary search
-       
-   }
-   
     @Override
     public String toString() {
-        return heap.toString();
+        return Arrays.toString(heap);
+    }
+    
+    /**
+     * Swap elements at index i and j
+     * @param i
+     * @param j 
+     */
+    private void swap(int i, int j) {
+        T temp = heap[i];
+        heap[i] = heap[j];
+        heap[j] = temp;
     }
     
 }

@@ -15,8 +15,6 @@
  */
 package pedigree;
 
-import java.util.Random;
-
 /**
  *
  * @author Mikl&oacute;s Cs&#369;r&ouml;s
@@ -30,7 +28,7 @@ public class Sim implements Comparable<Sim>
     public static double MAX_MATING_AGE_F = 50.0; // Janet Jackson
     public static double MAX_MATING_AGE_M = 73.0; // Charlie Chaplin
     
-    private final Random RND = new Random();
+//    private final Random RND = new Random();
     
     /** 
      * Ordering by death date.
@@ -44,10 +42,10 @@ public class Sim implements Comparable<Sim>
         return Double.compare(this.deathtime,o.deathtime);
     }
 
-    private Sex generateSex() {
-       int temp = RND.nextInt(2); // generate 0 or 1
-       return Sex.values()[temp];
-    }
+//    private Sex generateSex(Random RND) {
+//       int temp = RND.nextInt(2); // generate 0 or 1
+//       return Sex.values()[temp];
+//    }
     
     public enum Sex {F, M};
 
@@ -60,20 +58,7 @@ public class Sim implements Comparable<Sim>
     
     private Sex sex;
     
-//    protected Sim(Sim mother, Sim father, double birth, Sex sex) // deprecated: miklos code
-//    { 
-//        this.mother = mother;
-//        this.father = father;
-//        
-//        this.birthtime = birth;
-//        this.deathtime = Double.POSITIVE_INFINITY;
-//        
-//        this.sex = sex;
-//        
-//        this.sim_ident = NEXT_SIM_IDX++;
-//    }
-    
-    protected Sim(Sim mother, Sim father, double birth) 
+    protected Sim(Sim mother, Sim father, double birth, Sex sex) 
     { 
         this.mother = mother;
         this.father = father;
@@ -81,18 +66,31 @@ public class Sim implements Comparable<Sim>
         this.birthtime = birth;
         this.deathtime = Double.POSITIVE_INFINITY;
         
-        this.sex = generateSex();
+        this.sex = sex;
         
         this.sim_ident = NEXT_SIM_IDX++;
     }
     
+//    protected Sim(Sim mother, Sim father, double birth) // constructor if we decide to generateSex inside Sim class
+//    { 
+//        this.mother = mother;
+//        this.father = father;
+//        
+//        this.birthtime = birth;
+//        this.deathtime = Double.POSITIVE_INFINITY;
+//        
+//        this.sex = generateSex();
+//        
+//        this.sim_ident = NEXT_SIM_IDX++;
+//    }
+    
     /**
      * A founding Sim.
      */
-//    public Sim(Sex sex) // deprecated: miklos code
-//    {
-//        this(null, null, 0.0, sex);
-//    }
+    public Sim(Sex sex) // deprecated: miklos code
+    {
+        this(null, null, 0.0, sex);
+    }
     
     /**
      * If this sim is of mating age at the given time
