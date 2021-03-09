@@ -23,10 +23,12 @@ public class Sim implements Comparable<Sim>
 {
     private static int NEXT_SIM_IDX=0;
     
-    public static double MIN_MATING_AGE_F = 16.0;
-    public static double MIN_MATING_AGE_M = 16.0;
-    public static double MAX_MATING_AGE_F = 50.0; // Janet Jackson
-    public static double MAX_MATING_AGE_M = 73.0; // Charlie Chaplin
+    public static final double MIN_MATING_AGE_F = 16.0;
+    public static final double MIN_MATING_AGE_M = 16.0;
+    public static final double MAX_MATING_AGE_F = 50.0; // Janet Jackson
+    public static final double MAX_MATING_AGE_M = 73.0; // Charlie Chaplin
+    
+    public static final double FIDELITY = 0.9;
     
 //    private final Random RND = new Random();
     
@@ -150,8 +152,6 @@ public class Sim implements Comparable<Sim>
     {
         return deathtime;
     }
-    
-    
     
     public void setDeathTime(double death_time)
     {
