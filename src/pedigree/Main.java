@@ -25,11 +25,9 @@ public class Main {
         PQ p = new PQ();
         Sim sim = new Sim(Sim.Sex.F);
         Event e1 = new Event(sim, 1, Event.EventType.BIRTH);
-                Event e11 = new Event(sim, 1, Event.EventType.BIRTH);
-
+        Event e11 = new Event(sim, 1, Event.EventType.BIRTH);
         Event e2 = new Event(sim, 2, Event.EventType.BIRTH);
         Event e22 = new Event(sim, 2, Event.EventType.BIRTH);
-
         Event e3 = new Event(sim, 3, Event.EventType.BIRTH);
         Event e4 = new Event(sim, 4, Event.EventType.BIRTH);
         Event e5 = new Event(sim, 5, Event.EventType.BIRTH);
@@ -39,7 +37,6 @@ public class Main {
         
         p.insert(e5);
         p.insert(e4);
-        
         p.insert(e6);
         p.insert(e1);
         p.insert(e2);
@@ -48,7 +45,7 @@ public class Main {
         p.insert(e11);
         p.insert(e7);
         p.insert(e8);
-//
+
         System.out.println(p);
 
     }
