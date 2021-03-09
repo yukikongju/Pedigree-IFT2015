@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pedigree;
 
 import java.util.HashMap;
 import java.util.Random;
 import pedigree.Sim.Sex;
 
-/**
- *
- * @author emuli
- */
 public class Simulation {
     
    public final Random RND; 
@@ -89,7 +80,6 @@ public class Simulation {
         System.out.println("dead");
     }
 
-    private void reprodution(Event E) {
-        // TODO: 
+    private void reprodution(Event E) { // TODO
     }
 }
