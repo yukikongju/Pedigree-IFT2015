@@ -34,7 +34,10 @@ public class Main {
         Event e6 = new Event(sim, 6, Event.EventType.BIRTH);
         Event e7 = new Event(sim, 7, Event.EventType.BIRTH);
         Event e8 = new Event(sim, 8, Event.EventType.BIRTH);
-        
+        Event e0 = new Event(sim, 0, Event.EventType.BIRTH);
+
+//                p.insert(e0); // PROB: pq only works with value that are not 0 bc comparison fails otherwise
+
         p.insert(e5);
         p.insert(e4);
         p.insert(e6);
@@ -46,6 +49,11 @@ public class Main {
         p.insert(e7);
         p.insert(e8);
 
+//        System.out.println(p);
+        
+        Event removed = (Event) p.deleteMin();
+        System.out.println(removed);
+        
         System.out.println(p);
 
     }

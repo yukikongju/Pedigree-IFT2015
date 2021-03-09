@@ -34,7 +34,7 @@ public class PQ <T extends Comparable<T>>{
         return size == 0;
     }
    
-        private boolean more(int i, int j) {
+    private boolean more(int i, int j) {
        return heap[i].compareTo(heap[j]) > 0;
     }
     
@@ -63,13 +63,12 @@ public class PQ <T extends Comparable<T>>{
             resize(heap.length * 2);
         }
         heap[size] = elem;
-        swim(size);
-        size++;
+        swim(size++);
     }
 
     private void swim(int index) {
         int parent = getParentIndex(index);
-        while(index >0 && less(index, parent)){
+        while(index > 0 && less(index, parent)){
             swap(parent, index);
             index = parent;
             parent = getParentIndex(index);
@@ -77,7 +76,39 @@ public class PQ <T extends Comparable<T>>{
     }
     
     private int getParentIndex(int index){
-        return (index -1)/2;
+        return (index - 1)/2;
+    }
+    
+    private void sink(int index){
+        int child = getIndexMinChild(index);
+        while(child != 0 && more(index, child)){
+//        while(child < size() && more(index, child)){
+            swap(child, index);
+            index = child;
+            child = getIndexMinChild(index);
+        }
+    }
+
+    private int getIndexMinChild(int index) { // FIXED
+        int left = index * 2 + 1;
+        int right = (index * 2) + 2;
+        int smallest = left;
+        if(left >= size) return 0; // VERIFY: if child doesn't exist, return 0
+        if(right < size() && less(right, smallest)) smallest = right; // check if right is smaller than left
+        return smallest;
+    }
+    
+    public T deleteMin(){
+        if(isEmpty()) return null;
+        T topElement = heap[0];
+        int indexOfLastElement = size() -1 ;
+        if(size() > 0){ // TOFIX: redundant
+            swap(indexOfLastElement, 0);
+            heap[indexOfLastElement] = null;
+            size--; // TODO: resize
+            sink(0);
+        }
+        return topElement;
     }
     
 }
