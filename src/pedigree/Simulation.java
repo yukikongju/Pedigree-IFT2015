@@ -77,7 +77,8 @@ public class Simulation {
        E.getSim().setDeathTime(E.getScheduledTime() + lifeLength);
        Event death = new Event(E.getSim(), E.getScheduledTime() + lifeLength, Event.EventType.DEATH);
        eventQ.insert(death); // PROBLEM: inserting inside PQ makes the program halt
-    
+        System.out.println(death);
+        System.out.println(eventQ);
        if (E.getSim().getSex() == Sim.Sex.F){ // TODO: schedule reproduction if sim is a female (how many children does the woman birth)
 //           double ageOfReproduction = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE);
 //           System.out.println(ageOfReproduction);
