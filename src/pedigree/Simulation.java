@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import pedigree.Sim.Sex;
 
 public class Simulation {
     
@@ -15,7 +14,7 @@ public class Simulation {
     private PQ<Sim> population; // PQ<Sim> is sorted chronologically by death
     private AgeModel ageModel;
     
-    private ArrayList<Sim> males; // TODO: change Data Structures?
+    private ArrayList<Sim> males; // TO FIX: change Data Structures
     
     //    add ancestors males and females to a hashmap to facilitate mating 
     //    HashMap<Sim> aieux;
@@ -79,12 +78,10 @@ public class Simulation {
        
        // scheduling reproduction
        if (E.getSim().getSex() == Sim.Sex.F){
-          double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); // WRONG OUTPUT???
-//        Event reproduction = new Event(E.getSim(), E.getScheduledTime() + Sim.MIN_MATING_AGE_F + waitingTime,
-//                Event.EventType.REPRODUCTION); // VERIFY
+          double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); 
+        Event reproduction = new Event(E.getSim(), E.getScheduledTime() + Sim.MIN_MATING_AGE_F + waitingTime,
+                Event.EventType.REPRODUCTION); // PROBLEM: HALT
 //           System.out.println(E.getScheduledTime() + waitingTime);
-        Event reproduction = new Event(E.getSim(), E.getScheduledTime() + waitingTime,
-                Event.EventType.REPRODUCTION); // VERIFY
         eventQ.insert(reproduction);
        }
        
