@@ -11,8 +11,8 @@ public class Simulation {
    public final Random RND; 
    public final double REPRODUCTION_RATE;
     
-    private PQ<Event> eventQ; // PQ<Event> is sorted cronologically by death 
-    private PQ<Sim> population; // PQ<Sim> is sorted bronologically by death
+    private PQ<Event> eventQ; // PQ<Event> is sorted chronologically by death 
+    private PQ<Sim> population; // PQ<Sim> is sorted chronologically by death
     private AgeModel ageModel;
     
     private ArrayList<Sim> males; // TODO: change Data Structures?
@@ -42,6 +42,7 @@ public class Simulation {
         // Begin simulation
         while(!eventQ.isEmpty()){
             Event E = (Event) eventQ.deleteMin();
+//            if(E.getScheduledTime() > Tmax) System.out.println("Tmax");
             if(E.getScheduledTime() > Tmax) break; // arrêter à Tmax 
             if (E.getSim().getDeathTime() >= E.getScheduledTime()){ // FIXED: we don't want a strict inequality bc we won't be able to simulate death
                 switch (E.getEventType()) { // NOTE: eventType should never be null, so we don't have to check if it's null
@@ -60,6 +61,7 @@ public class Simulation {
             }
 //            System.out.println("YEAR : + " + E.getScheduledTime() + " EVENT TYPE " + E.getEventType().toString());
         }
+        System.out.println(population.size());
     }
     
     private Sim.Sex generateSex(Random random){
@@ -71,14 +73,19 @@ public class Simulation {
        // scheduling death
        double lifeLength = ageModel.randomAge(RND); // lifespan of a Sim
        E.getSim().setDeathTime(E.getScheduledTime() + lifeLength);
+       System.out.println(E.getScheduledTime());
        Event death = new Event(E.getSim(), E.getScheduledTime() + lifeLength, Event.EventType.DEATH);
        eventQ.insert(death); 
        
-//        System.out.println(E.getSim());
-       
        // scheduling reproduction
-       if (E.getSim().getSex() == Sim.Sex.F){ // TODO: schedule reproduction if sim is a female (how many children does the woman birth)
-            scheduleReproduction(E);
+       if (E.getSim().getSex() == Sim.Sex.F){
+          double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); // WRONG OUTPUT???
+//        Event reproduction = new Event(E.getSim(), E.getScheduledTime() + Sim.MIN_MATING_AGE_F + waitingTime,
+//                Event.EventType.REPRODUCTION); // VERIFY
+//           System.out.println(E.getScheduledTime() + waitingTime);
+        Event reproduction = new Event(E.getSim(), E.getScheduledTime() + waitingTime,
+                Event.EventType.REPRODUCTION); // VERIFY
+        eventQ.insert(reproduction);
        }
        
        // adding sim to mating pool if male
@@ -99,29 +106,25 @@ public class Simulation {
         }
     }
 
-    private void reproduction(Event E) { // TODO: schedule bebe every time mom gets pregnant?
+    private void reproduction(Event E) { 
         Sim mom = E.getSim();
         double birthdate = E.getScheduledTime();
         if(mom.isMatingAge(birthdate) && !males.isEmpty()){ // FIXED: doesn't try to find mate if there is no males left 
             Sim dad = findFather(birthdate, mom); 
-            Sim baby = new Sim(mom, dad, E.getScheduledTime(), generateSex(RND));
+            Sim baby = new Sim(mom, dad, birthdate, generateSex(RND));
             Event naissance = new Event(baby, E.getScheduledTime(), Event.EventType.BIRTH);
             eventQ.insert(naissance);
             dad.setMate(mom);
             mom.setMate(dad);
             
             // Schedule next reproduction
-            scheduleReproduction(E);
+            double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); // WRONG OUTPUT???
+            Event reproduction = new Event(E.getSim(), E.getScheduledTime() + waitingTime,
+                Event.EventType.REPRODUCTION); // VERIFY
+            eventQ.insert(reproduction);
         }
     }
     
-    private void scheduleReproduction(Event E){
-        double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); // WRONG OUTPUT???
-        Event reproduction = new Event(E.getSim(), Sim.MIN_MATING_AGE_F + waitingTime,
-                Event.EventType.REPRODUCTION); // VERIFY
-        eventQ.insert(reproduction);
-    }
-
     private Sim findFather(double time, Sim mom) { // PROBLEM 2: get caught up in infinite loop from time to time (works with dummy) [code du prof]
         Sim father = null;
         if(!mom.isInARelationship(time) || RND.nextDouble()> Sim.FIDELITY){ // if mom is single, has dead husband or mate cheated, find new partner
@@ -136,8 +139,7 @@ public class Simulation {
         } else{
             father = mom.getMate();
         }
-        System.out.println(father);
-//        System.out.println(males.size());
+//        System.out.println(father);
         return father;
     }
 
