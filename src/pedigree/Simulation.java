@@ -1,6 +1,5 @@
 package pedigree;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -12,20 +11,16 @@ public class Simulation {
     
     private PQ<Event> eventQ; // PQ<Event> is sorted chronologically by death 
     private PQ<Sim> population; // PQ<Sim> is sorted chronologically by death
-    private AgeModel ageModel;
-    
-    private ArrayList<Sim> males; // TO FIX: change Data Structures (use HashMap/Hashset instead?)
+    private final AgeModel ageModel;
     
     //    add ancestors males and females to a hashmap to facilitate mating 
     //    HashMap<Sim> aieux;
     //    HashMap<Sim> aieules;
-    //    HashMap<Sim> population;
 
     public Simulation() {
         eventQ = new PQ<>();
         population = new PQ<>();
         ageModel = new AgeModel();
-        males = new ArrayList<>();
         RND = new Random(); // TODO: Fix Reproduction rate
         REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F); // probabilité d'avoir un bébé à chaque année
     }
@@ -85,11 +80,6 @@ public class Simulation {
         eventQ.insert(reproduction);
        }
        
-       // adding sim to mating pool if male
-       if(E.getSim().getSex() == Sim.Sex.M){
-           males.add(E.getSim());
-       }
-       
        // adding Sim to population active
        population.insert(E.getSim());
     }
@@ -98,15 +88,16 @@ public class Simulation {
         Sim sim =  population.deleteMin();         // remove sim from population active
         
         // remove males
-        if(sim.getSex() != Sim.Sex.M){ // TO FIX: we have to find another DS to store males
-            males.remove(sim);
-        }
+//        if(sim.getSex() != Sim.Sex.M){ // TO FIX: we have to find another DS to store males
+//            males.remove(sim);
+//        }
     }
 
     private void reproduction(Event E) { 
         Sim mom = E.getSim();
         double birthdate = E.getScheduledTime();
-        if(mom.isMatingAge(birthdate) && !males.isEmpty()){ // FIXED: doesn't try to find mate if there is no males left 
+//        if(mom.isMatingAge(birthdate) && !males.isEmpty()){ // FIXED: doesn't try to find mate if there is no males left 
+        if(mom.isMatingAge(birthdate) && !population.isEmpty()){ // FIXED: doesn't try to find mate if there is no males left 
             Sim dad = findFather(birthdate, mom); 
             Sim baby = new Sim(mom, dad, birthdate, generateSex(RND));
             Event naissance = new Event(baby, E.getScheduledTime(), Event.EventType.BIRTH);
@@ -126,7 +117,8 @@ public class Simulation {
         Sim father = null;
         if(!mom.isInARelationship(time) || RND.nextDouble()> Sim.FIDELITY){ // if mom is single, has dead husband or mate cheated, find new partner
             do{
-                Sim potentialMate = getRandomMate(); 
+//                Sim potentialMate = getRandomMate();
+                Sim potentialMate = (Sim) population.getRandomElement();
                 if(potentialMate.getSex() != mom.getSex() && potentialMate.isMatingAge(time)){ // if mate is a fertile male
                     if(mom.isInARelationship(time) || !potentialMate.isInARelationship(time) || RND.nextDouble() > Sim.FIDELITY){ // if male wants to cheat
                         father = potentialMate;
@@ -140,14 +132,4 @@ public class Simulation {
         return father;
     }
 
-    private Sim getRandomMate() { // TO FIX: we get caught up in an infinite loop when there is no males in the population
-        // TODO: replace males by population
-        if(males.isEmpty()) throw new IllegalArgumentException("NO MALES LEFT IN POPULATION"); 
-        int index = RND.nextInt(males.size()); 
-        return (Sim) males.get(index);
-//        if(population.isEmpty()) throw new IllegalArgumentException("NO MALES LEFT IN POPULATION"); 
-//        int index = RND.nextInt(population.size()); 
-//        return (Sim) population.heap[index];
-    }
-    
 }

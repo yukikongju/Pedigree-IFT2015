@@ -2,6 +2,7 @@
 package pedigree;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class PQ <T extends Comparable<T>>{
     
@@ -113,6 +114,21 @@ public class PQ <T extends Comparable<T>>{
             sink(0);
         }
         return topElement;
+    }
+    
+    // linear search O(n)
+    public boolean contains(T elem){ // VERIFY: should we create population class for sim comparison instead?
+        for(int i = 0; i< heap.length; i++){
+            if(heap[i] == elem) return true;
+        }
+        return false;
+    }
+    
+    public T getRandomElement(){ // TO TEST
+        if(isEmpty()) throw new IllegalArgumentException("HEAP IS EMPTY"); 
+        Random random = new Random(); // VERIFY: is it better to pass random in parameter or to create it every time
+        int index = random.nextInt(size()); 
+        return heap[index];
     }
     
 }
