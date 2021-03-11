@@ -28,8 +28,7 @@ public class Simulation {
         ageModel = new AgeModel();
         males = new ArrayList<>();
         RND = new Random(); // TODO: Fix Reproduction rate
-//        REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F);
-        REPRODUCTION_RATE = ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F);
+        REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F); // probabilité d'avoir un bébé à chaque année
 //        System.out.println(REPRODUCTION_RATE);
     }
 
@@ -80,10 +79,10 @@ public class Simulation {
        
        // scheduling reproduction
        if (E.getSim().getSex() == Sim.Sex.F){ // TODO: schedule reproduction if sim is a female (how many children does the woman birth)
-//           double ageOfReproduction = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); // WRONG OUTPUT???
-           double ageOfReproduction = 25; // TO CHANGE: calculate number of offspring and random ageOfReproduction
-           Event reproduction = new Event(E.getSim(), E.getScheduledTime() + ageOfReproduction,
-                   Event.EventType.REPRODUCTION);
+           double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); // WRONG OUTPUT???
+//           double ageOfReproduction = 25; // TO CHANGE: calculate number of offspring and random ageOfReproduction
+           Event reproduction = new Event(E.getSim(), Sim.MIN_MATING_AGE_F + waitingTime,
+                   Event.EventType.REPRODUCTION); // VERIFY
            eventQ.insert(reproduction);
        }
        
@@ -98,12 +97,14 @@ public class Simulation {
 
     private void death(Event E) {
         population.deleteMin();         // remove sim from population active
+        
+        // 
     }
 
     private void reproduction(Event E) { // TODO: schedule bebe every time mom gets pregnant?
         Sim mom = E.getSim();
         double birthdate = E.getScheduledTime();
-        if(mom.isMatingAge(birthdate)){
+        if(mom.isMatingAge(birthdate) && !males.isEmpty()){ // FIXED: doesn't try to find mate if there is no males left 
             Sim dad = findFather(birthdate, mom); 
 //            Sim dad = new Sim(mom.getMother(), mom.getFather(), mom.getBirthTime(), generateSex(RND)); //DUMMY
 //            dad.setDeathTime(mom.getDeathTime()); // DUMMY
@@ -112,16 +113,22 @@ public class Simulation {
             eventQ.insert(naissance);
             dad.setMate(mom);
             mom.setMate(dad);
+            
+            // Schedule next reproduction
+            double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); // WRONG OUTPUT???
+           Event reproduction = new Event(E.getSim(), Sim.MIN_MATING_AGE_F + waitingTime,
+                   Event.EventType.REPRODUCTION); // VERIFY
+           eventQ.insert(reproduction);
         }
     }
 
-    private Sim findFather(double time, Sim mom) {
+    private Sim findFather(double time, Sim mom) { // PROBLEM 2: get caught up in infinite loop from time to time (works with dummy) [code du prof]
         Sim father = null;
-        if(!mom.isInARelationship(time) || RND.nextDouble()> Sim.FIDELITY){
+        if(!mom.isInARelationship(time) || RND.nextDouble()> Sim.FIDELITY){ // if mom is single, has dead husband or mate cheated, find new partner
             do{
                 Sim potentialMate = getRandomMate(); 
-                if(potentialMate.getSex() != mom.getSex() && potentialMate.isMatingAge(time)){
-                    if(mom.isInARelationship(time) || !potentialMate.isInARelationship(time) || RND.nextDouble() > Sim.FIDELITY){
+                if(potentialMate.getSex() != mom.getSex() && potentialMate.isMatingAge(time)){ // if mate is a fertile male
+                    if(mom.isInARelationship(time) || !potentialMate.isInARelationship(time) || RND.nextDouble() > Sim.FIDELITY){ // if male wants to cheat
                         father = potentialMate;
                     }
                 }
@@ -129,14 +136,13 @@ public class Simulation {
         } else{
             father = mom.getMate();
         }
+        System.out.println(father);
         return father;
     }
 
-    private Sim getRandomMate() { // PROBLEM 1: we get caucht up in an infinite loop when there is no males in the population
-        if(males.isEmpty()) System.out.println("NO MALES"); // PROBLEM 2: we still get caught up in an infinite loop from time to time
+    private Sim getRandomMate() { // TO FIX: we get caught up in an infinite loop when there is no males in the population
+        if(males.isEmpty()) throw new IllegalArgumentException("NO MALES LEFT IN POPULATION"); 
         int index = RND.nextInt(males.size()); 
-//        System.out.println(index);
-//        System.out.println("num males " + males.size());
         return (Sim) males.get(index);
     }
 }

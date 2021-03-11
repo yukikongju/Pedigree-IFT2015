@@ -74,7 +74,7 @@ public class AgeModel
     }
 
     /**
-     * Expected time span (TS) for mating: average number of children will be TS/matingrate.
+     * Expected time span (TS) for mating: average number of children will be TS/mating rate.
      *
      * @param min_age minimum age of sexual maturity
      * @param max_age maximum age of parenting
@@ -123,7 +123,6 @@ public class AgeModel
 
     /**
      * Exponentially distributed random variable.
-     *
      *
      * @param RND random number generator
      * @param rate inverse of the mean
