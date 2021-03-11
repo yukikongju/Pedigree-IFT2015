@@ -96,9 +96,12 @@ public class Simulation {
     }
 
     private void death(Event E) {
-        population.deleteMin();         // remove sim from population active
+        Sim sim =  population.deleteMin();         // remove sim from population active
         
-        // 
+        // remove males
+        if(sim.getSex() != Sim.Sex.M){ // TO FIX: we have to find another DS to store males
+            males.remove(sim);
+        }
     }
 
     private void reproduction(Event E) { // TODO: schedule bebe every time mom gets pregnant?
@@ -137,6 +140,7 @@ public class Simulation {
             father = mom.getMate();
         }
         System.out.println(father);
+//        System.out.println(males.size());
         return father;
     }
 
