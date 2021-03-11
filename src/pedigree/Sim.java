@@ -73,19 +73,6 @@ public class Sim implements Comparable<Sim>
         this.sim_ident = NEXT_SIM_IDX++;
     }
     
-//    protected Sim(Sim mother, Sim father, double birth) // constructor if we decide to generateSex inside Sim class
-//    { 
-//        this.mother = mother;
-//        this.father = father;
-//        
-//        this.birthtime = birth;
-//        this.deathtime = Double.POSITIVE_INFINITY;
-//        
-//        this.sex = generateSex();
-//        
-//        this.sim_ident = NEXT_SIM_IDX++;
-//    }
-    
     /**
      * A founding Sim.
      */
@@ -124,11 +111,6 @@ public class Sim implements Comparable<Sim>
         return mate != null && mate.getDeathTime()>time 
                 && mate.getMate()==this;
     }
-    
-//    public void setDeath(double death) //duplicated in csuros code
-//    {
-//        this.deathtime = death;
-//    }
     
     public boolean isMale(){
         return Sex.M == getSex();

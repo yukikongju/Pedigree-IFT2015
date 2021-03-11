@@ -1,7 +1,5 @@
 package pedigree;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Random;
 
 public class Simulation {
@@ -72,7 +70,7 @@ public class Simulation {
        eventQ.insert(death); 
        
        // scheduling reproduction
-       if (E.getSim().getSex() == Sim.Sex.F){
+       if (E.getSim().isFemale()){
           double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); 
         Event reproduction = new Event(E.getSim(), E.getScheduledTime() + Sim.MIN_MATING_AGE_F + waitingTime,
                 Event.EventType.REPRODUCTION); // PROBLEM: HALT
@@ -86,17 +84,11 @@ public class Simulation {
 
     private void death(Event E) {
         Sim sim =  population.deleteMin();         // remove sim from population active
-        
-        // remove males
-//        if(sim.getSex() != Sim.Sex.M){ // TO FIX: we have to find another DS to store males
-//            males.remove(sim);
-//        }
     }
 
     private void reproduction(Event E) { 
         Sim mom = E.getSim();
         double birthdate = E.getScheduledTime();
-//        if(mom.isMatingAge(birthdate) && !males.isEmpty()){ // FIXED: doesn't try to find mate if there is no males left 
         if(mom.isMatingAge(birthdate) && !population.isEmpty()){ // FIXED: doesn't try to find mate if there is no males left 
             Sim dad = findFather(birthdate, mom); 
             Sim baby = new Sim(mom, dad, birthdate, generateSex(RND));
@@ -117,7 +109,6 @@ public class Simulation {
         Sim father = null;
         if(!mom.isInARelationship(time) || RND.nextDouble()> Sim.FIDELITY){ // if mom is single, has dead husband or mate cheated, find new partner
             do{
-//                Sim potentialMate = getRandomMate();
                 Sim potentialMate = (Sim) population.getRandomElement();
                 if(potentialMate.getSex() != mom.getSex() && potentialMate.isMatingAge(time)){ // if mate is a fertile male
                     if(mom.isInARelationship(time) || !potentialMate.isInARelationship(time) || RND.nextDouble() > Sim.FIDELITY){ // if male wants to cheat
@@ -128,7 +119,6 @@ public class Simulation {
         } else{
             father = mom.getMate();
         }
-//        System.out.println(father);
         return father;
     }
 

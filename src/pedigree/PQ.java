@@ -125,7 +125,7 @@ public class PQ <T extends Comparable<T>>{
     }
     
     public T getRandomElement(){ // TO TEST
-        if(isEmpty()) throw new IllegalArgumentException("HEAP IS EMPTY"); 
+        if(isEmpty()) throw new IllegalArgumentException("HEAP IS EMPTY"); // VERIFY: should never go in this because we verify that heap not empty before calling
         Random random = new Random(); // VERIFY: is it better to pass random in parameter or to create it every time
         int index = random.nextInt(size()); 
         return heap[index];
