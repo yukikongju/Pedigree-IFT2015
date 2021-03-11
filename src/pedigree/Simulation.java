@@ -29,7 +29,6 @@ public class Simulation {
         males = new ArrayList<>();
         RND = new Random(); // TODO: Fix Reproduction rate
         REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F); // probabilité d'avoir un bébé à chaque année
-//        System.out.println(REPRODUCTION_RATE);
     }
 
     public void simulate(int n, double Tmax){
@@ -80,7 +79,6 @@ public class Simulation {
        // scheduling reproduction
        if (E.getSim().getSex() == Sim.Sex.F){ // TODO: schedule reproduction if sim is a female (how many children does the woman birth)
            double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); // WRONG OUTPUT???
-//           double ageOfReproduction = 25; // TO CHANGE: calculate number of offspring and random ageOfReproduction
            Event reproduction = new Event(E.getSim(), Sim.MIN_MATING_AGE_F + waitingTime,
                    Event.EventType.REPRODUCTION); // VERIFY
            eventQ.insert(reproduction);
@@ -109,8 +107,6 @@ public class Simulation {
         double birthdate = E.getScheduledTime();
         if(mom.isMatingAge(birthdate) && !males.isEmpty()){ // FIXED: doesn't try to find mate if there is no males left 
             Sim dad = findFather(birthdate, mom); 
-//            Sim dad = new Sim(mom.getMother(), mom.getFather(), mom.getBirthTime(), generateSex(RND)); //DUMMY
-//            dad.setDeathTime(mom.getDeathTime()); // DUMMY
             Sim baby = new Sim(mom, dad, E.getScheduledTime(), generateSex(RND));
             Event naissance = new Event(baby, E.getScheduledTime(), Event.EventType.BIRTH);
             eventQ.insert(naissance);
