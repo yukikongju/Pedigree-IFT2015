@@ -64,7 +64,7 @@ public class Simulation {
 
     private void birth(Event E) {
        // scheduling death
-       double lifeLength = ageModel.randomAge(RND); // lifespan of a Sim
+       double lifeLength = generateLifeLength(); // lifespan of a Sim
        E.getSim().setDeathTime(E.getScheduledTime() + lifeLength); // TO FIX? should we set death to global deathtime or relative to sim
        Event death = new Event(E.getSim(), E.getScheduledTime() + lifeLength, Event.EventType.DEATH);
        eventQ.insert(death); 
@@ -105,6 +105,10 @@ public class Simulation {
     
     private double generateRandomWaitingTime(){
         return AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE);
+    }
+    
+    private double generateLifeLength(){
+        return ageModel.randomAge(RND); // generate lifespan of a Sim
     }
     
     private Sim findFather(double time, Sim mom) { // PROBLEM 2: get caught up in infinite loop from time to time
