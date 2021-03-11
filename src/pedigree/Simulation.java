@@ -71,8 +71,7 @@ public class Simulation {
        
        // scheduling reproduction
        if (E.getSim().isFemale()){
-          double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); 
-        Event reproduction = new Event(E.getSim(), E.getScheduledTime() + Sim.MIN_MATING_AGE_F + waitingTime,
+        Event reproduction = new Event(E.getSim(), E.getScheduledTime() + Sim.MIN_MATING_AGE_F + generateRandomWaitingTime(),
                 Event.EventType.REPRODUCTION); // PROBLEM: HALT
 //           System.out.println(E.getScheduledTime() + waitingTime);
         eventQ.insert(reproduction);
@@ -98,11 +97,14 @@ public class Simulation {
             mom.setMate(dad);
             
             // Schedule next reproduction
-            double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); 
-            Event reproduction = new Event(E.getSim(), E.getScheduledTime() + waitingTime,
+            Event reproduction = new Event(E.getSim(), E.getScheduledTime() + generateRandomWaitingTime(),
                 Event.EventType.REPRODUCTION); 
             eventQ.insert(reproduction);
         }
+    }
+    
+    private double generateRandomWaitingTime(){
+        return AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE);
     }
     
     private Sim findFather(double time, Sim mom) { // PROBLEM 2: get caught up in infinite loop from time to time
