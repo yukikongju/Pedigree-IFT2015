@@ -7,14 +7,14 @@ import java.util.Random;
 
 public class Simulation {
     
-   public final Random RND; 
-   public final double REPRODUCTION_RATE;
+    public final Random RND; 
+    public final double REPRODUCTION_RATE;
     
     private PQ<Event> eventQ; // PQ<Event> is sorted chronologically by death 
     private PQ<Sim> population; // PQ<Sim> is sorted chronologically by death
     private AgeModel ageModel;
     
-    private ArrayList<Sim> males; // TO FIX: change Data Structures
+    private ArrayList<Sim> males; // TO FIX: change Data Structures (use HashMap/Hashset instead?)
     
     //    add ancestors males and females to a hashmap to facilitate mating 
     //    HashMap<Sim> aieux;
@@ -30,7 +30,9 @@ public class Simulation {
         REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F); // probabilité d'avoir un bébé à chaque année
     }
 
-    public void simulate(int n, double Tmax){
+    public PQ<Sim> simulate(int n, double Tmax){
+        // TODO: initalize eventQ, population and males here to generate several simulation with different parameters
+        
         // generate first generation
         for(int i = 0; i<n; i++){
             Sim fondateur = new Sim(generateSex(RND)); // TODO: refractor generateSex in SexModel or inside Sim class?
@@ -41,7 +43,6 @@ public class Simulation {
         // Begin simulation
         while(!eventQ.isEmpty()){
             Event E = (Event) eventQ.deleteMin();
-//            if(E.getScheduledTime() > Tmax) System.out.println("Tmax");
             if(E.getScheduledTime() > Tmax) break; // arrêter à Tmax 
             if (E.getSim().getDeathTime() >= E.getScheduledTime()){ // FIXED: we don't want a strict inequality bc we won't be able to simulate death
                 switch (E.getEventType()) { // NOTE: eventType should never be null, so we don't have to check if it's null
@@ -60,7 +61,7 @@ public class Simulation {
             }
 //            System.out.println("YEAR : + " + E.getScheduledTime() + " EVENT TYPE " + E.getEventType().toString());
         }
-        System.out.println(population.size());
+        return population;
     }
     
     private Sim.Sex generateSex(Random random){
@@ -71,8 +72,7 @@ public class Simulation {
     private void birth(Event E) {
        // scheduling death
        double lifeLength = ageModel.randomAge(RND); // lifespan of a Sim
-       E.getSim().setDeathTime(E.getScheduledTime() + lifeLength);
-       System.out.println(E.getScheduledTime());
+       E.getSim().setDeathTime(E.getScheduledTime() + lifeLength); // TO FIX? should we set death to global deathtime or relative to sim
        Event death = new Event(E.getSim(), E.getScheduledTime() + lifeLength, Event.EventType.DEATH);
        eventQ.insert(death); 
        
@@ -115,14 +115,14 @@ public class Simulation {
             mom.setMate(dad);
             
             // Schedule next reproduction
-            double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); // WRONG OUTPUT???
+            double waitingTime = AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE); 
             Event reproduction = new Event(E.getSim(), E.getScheduledTime() + waitingTime,
-                Event.EventType.REPRODUCTION); // VERIFY
+                Event.EventType.REPRODUCTION); 
             eventQ.insert(reproduction);
         }
     }
     
-    private Sim findFather(double time, Sim mom) { // PROBLEM 2: get caught up in infinite loop from time to time (works with dummy) [code du prof]
+    private Sim findFather(double time, Sim mom) { // PROBLEM 2: get caught up in infinite loop from time to time
         Sim father = null;
         if(!mom.isInARelationship(time) || RND.nextDouble()> Sim.FIDELITY){ // if mom is single, has dead husband or mate cheated, find new partner
             do{
@@ -141,8 +141,13 @@ public class Simulation {
     }
 
     private Sim getRandomMate() { // TO FIX: we get caught up in an infinite loop when there is no males in the population
+        // TODO: replace males by population
         if(males.isEmpty()) throw new IllegalArgumentException("NO MALES LEFT IN POPULATION"); 
         int index = RND.nextInt(males.size()); 
         return (Sim) males.get(index);
+//        if(population.isEmpty()) throw new IllegalArgumentException("NO MALES LEFT IN POPULATION"); 
+//        int index = RND.nextInt(population.size()); 
+//        return (Sim) population.heap[index];
     }
+    
 }
