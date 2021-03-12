@@ -1,5 +1,6 @@
 package pedigree;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -13,6 +14,7 @@ public class Main {
         Simulation simulation = new Simulation();
         simulation.simulate(1000, 2000); // n>=1000 ; Tmax>=10n
         PQ<Sim> population = simulation.getPopulation();
+        
         System.out.println(population.size());
         
         // Coalescing
@@ -23,13 +25,17 @@ public class Main {
         HashMap<Double, Integer> populationGrowth = simulation.getPopulationGrowth();
         HashMap<Double, Integer> aieux = coalescing.getAieux();
         HashMap<Double, Integer> aieules = coalescing.getAieules();
-
         
         System.out.println(populationGrowth);
 
         // Generate CSV files from HashMaps
+        String downloadPath = new File("").getAbsolutePath().concat("/data/");
+        System.out.println(downloadPath);
+        FileManager manager = new FileManager(downloadPath);
+        String fileName = "test.csv";
+        manager.generateCSVFileForAncestors(fileName, aieux, aieules);
         
-       // Generate plot from coalescing
+        // Generate plot from coalescing
     }
 
 }
