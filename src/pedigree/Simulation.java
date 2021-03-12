@@ -1,5 +1,6 @@
 package pedigree;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class Simulation {
@@ -7,14 +8,19 @@ public class Simulation {
     public final Random RND; 
     public final double REPRODUCTION_RATE;
     
+    public static final double EPSILUM_HUNDRED_YEAR = 0.1; // error we are willing to accept when comparing time to hundred year
+    
     private PQ<Event> eventQ; // PQ<Event> is sorted chronologically by death 
     private PQ<Sim> population; // PQ<Sim> is sorted chronologically by death
     private final AgeModel ageModel;
+    
+    private HashMap<Double, Integer> populationGrowth;
     
     public Simulation() {
         eventQ = new PQ<>();
         population = new PQ<>();
         ageModel = new AgeModel();
+        populationGrowth = new HashMap<>();
         RND = new Random();
         REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F); // probabilité d'avoir un bébé à chaque année
     }
@@ -75,6 +81,11 @@ public class Simulation {
        
        // adding Sim to population active
        population.insert(E.getSim());
+       
+       // add checkpoints every 100 years for population growth
+       if(E.getScheduledTime() % 100 < EPSILUM_HUNDRED_YEAR){ // FIXED: bc time is a double, each year has to fall into an error rate
+           populationGrowth.put(E.getScheduledTime(), population.size());
+       }
     }
 
     private void death(Event E) {
@@ -124,4 +135,12 @@ public class Simulation {
         return father;
     }
 
+    public HashMap<Double, Integer> getPopulationGrowth() {
+        return populationGrowth;
+    }
+
+    public PQ<Sim> getPopulation() {
+        return population;
+    }
+    
 }
