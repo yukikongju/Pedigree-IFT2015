@@ -11,15 +11,11 @@ public class Simulation {
     private PQ<Sim> population; // PQ<Sim> is sorted chronologically by death
     private final AgeModel ageModel;
     
-    //    add ancestors males and females to a hashmap to facilitate mating 
-    //    HashMap<Sim> aieux;
-    //    HashMap<Sim> aieules;
-
     public Simulation() {
         eventQ = new PQ<>();
         population = new PQ<>();
         ageModel = new AgeModel();
-        RND = new Random(); // TODO: Fix Reproduction rate
+        RND = new Random();
         REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F); // probabilité d'avoir un bébé à chaque année
     }
 
@@ -115,7 +111,7 @@ public class Simulation {
         Sim father = null;
         if(!mom.isInARelationship(time) || RND.nextDouble()> Sim.FIDELITY){ // if mom is single, has dead husband or mate cheated, find new partner
             do{
-                Sim potentialMate = (Sim) population.getRandomElement();
+                Sim potentialMate = (Sim) population.getRandomElement(RND);
                 if(potentialMate.getSex() != mom.getSex() && potentialMate.isMatingAge(time)){ // if mate is a fertile male
                     if(mom.isInARelationship(time) || !potentialMate.isInARelationship(time) || RND.nextDouble() > Sim.FIDELITY){ // if male wants to cheat
                         father = potentialMate;
