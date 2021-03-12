@@ -8,9 +8,9 @@ public class Event implements Comparable<Event> {
         REPRODUCTION
     }
     
-    private Sim sim;
-    private double scheduledTime;
-    private EventType eventType;
+    private final Sim sim;
+    private final double scheduledTime;
+    private final EventType eventType;
 
     public Event(Sim sim, double time, EventType eventType) {
         this.sim = sim;
@@ -18,8 +18,6 @@ public class Event implements Comparable<Event> {
         this.eventType = eventType;
     }
     
-//    public abstract void simulate();
-
     public EventType getEventType() {
         return eventType;
     }
