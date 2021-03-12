@@ -30,8 +30,6 @@ public class Sim implements Comparable<Sim>
     
     public static final double FIDELITY = 0.9;
     
-//    private final Random RND = new Random();
-    
     /** 
      * Ordering by death date.
      * 
