@@ -10,9 +10,8 @@ import java.util.Map;
 
 public class Coalescing {
     
-    public void plotCoalescence(){
-        
-    }
+    private HashMap<Double, Integer> aieux; 
+    private HashMap<Double, Integer> aieules;
     
     public void generateCSVFile(HashMap<Double, Integer> aieux, HashMap<Double, Integer> aieules) throws IOException{
         String fileName = "test.csv";
@@ -38,7 +37,7 @@ public class Coalescing {
         Iterator iterDads = aieux.entrySet().iterator();
         while(iterDads.hasNext()){
             Map.Entry pair = (Map.Entry) iterDads.next();
-            writer.write(pair.getKey() + "," + pair.getValue() + "," + "F\n");
+            writer.write(pair.getKey() + "," + pair.getValue() + "," + "M\n");
             iterDads.remove(); // avoids concerrentModificationException
         }
         
@@ -47,11 +46,9 @@ public class Coalescing {
     
     public void coalesce(PQ<Sim> population) throws IOException { // TO FIX
         // VERIFY: how can we ensure that lookups are O(1) and not O(n)
-        HashMap<Double, Integer> aieux = new HashMap<>(); 
-        HashMap<Double, Integer> aieules = new HashMap<>(); 
+        aieux = new HashMap<>(); 
+        aieules = new HashMap<>(); 
 
-        HashMap<Double, Integer> coalescence = new HashMap<>(); // HashMap<birthtime, aieux size>
-        
         // begin coalescing
         while(!population.isEmpty()){
             Sim sim = population.deleteMin();
@@ -73,7 +70,15 @@ public class Coalescing {
         }
 //        System.out.println(aieux.size());
 //        System.out.println(aieules.size());
-        generateCSVFile(aieux, aieules);
+//        generateCSVFile(aieux, aieules);
+    }
+
+    public HashMap<Double, Integer> getAieules() {
+        return aieules;
+    }
+
+    public HashMap<Double, Integer> getAieux() {
+        return aieux;
     }
     
 }

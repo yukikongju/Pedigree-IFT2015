@@ -16,17 +16,18 @@ public class Simulation {
     
     private HashMap<Double, Integer> populationGrowth;
     
-    public Simulation() {
-        eventQ = new PQ<>();
-        population = new PQ<>();
+    public Simulation() { 
+        
         ageModel = new AgeModel();
-        populationGrowth = new HashMap<>();
         RND = new Random();
         REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F); // probabilité d'avoir un bébé à chaque année
     }
 
-    public PQ<Sim> simulate(int n, double Tmax){
-        // TODO: initalize eventQ, population and males here to generate several simulation with different parameters
+    public void simulate(int n, double Tmax){
+        // initialized PQ and hashMap inside simulate() instead of constructor in case we want to perform several simulations
+        eventQ = new PQ<>();
+        population = new PQ<>();
+        populationGrowth = new HashMap<>();
         
         // generate first generation
         for(int i = 0; i<n; i++){
@@ -56,7 +57,6 @@ public class Simulation {
             }
 //            System.out.println("YEAR : + " + E.getScheduledTime() + " EVENT TYPE " + E.getEventType().toString());
         }
-        return population;
     }
     
     private Sim.Sex generateSex(Random random){
