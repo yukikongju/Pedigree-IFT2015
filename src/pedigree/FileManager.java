@@ -19,7 +19,7 @@ public class FileManager {
     public void generateCSVFileForCoalescingPoints(String fileName, HashMap<Double, Integer> aieux, HashMap<Double, Integer> aieules) throws IOException{
         File file = new File(directory + fileName);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write("time, size, sex\n");
+        writer.write("time,size,sex\n");
 
         // https://stackoverflow.com/questions/1066589/iterate-through-a-hashmap
 
