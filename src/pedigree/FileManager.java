@@ -41,5 +41,21 @@ public class FileManager {
 
         writer.close();
     }
+    
+    public void generateCSVFileForPopulationGrowth(String fileName, HashMap<Double, Integer> populationGrowth) throws IOException{
+        File file = new File(directory + fileName);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write("time,size\n");
+        
+        // add population growth to csv file
+        Iterator iterPopulation = populationGrowth.entrySet().iterator();
+        while(iterPopulation.hasNext()){
+            Map.Entry pair = (Map.Entry) iterPopulation.next();
+            writer.write(pair.getKey() + "," + pair.getValue() + "\n");
+            iterPopulation.remove(); // avoids concurrentModificationException
+        }
+        
+        writer.close();
+    }
 
 }

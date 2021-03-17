@@ -31,8 +31,8 @@ public class Main {
         // Generate CSV files from HashMaps
         String downloadPath = new File("").getAbsolutePath().concat("/data/");
         FileManager manager = new FileManager(downloadPath);
-        String fileName = "coalescing.csv";
-        manager.generateCSVFileForCoalescingPoints(fileName, aieux, aieules);
+        manager.generateCSVFileForCoalescingPoints("coalescing.csv", aieux, aieules);
+        manager.generateCSVFileForPopulationGrowth("population.csv", populationGrowth);
         
         // Generate plot from coalescing
     }
