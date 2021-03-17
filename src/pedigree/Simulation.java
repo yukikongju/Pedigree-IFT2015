@@ -17,7 +17,6 @@ public class Simulation {
     private HashMap<Double, Integer> populationGrowth;
     
     public Simulation() { 
-        
         ageModel = new AgeModel();
         RND = new Random();
         REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F); // probabilité d'avoir un bébé à chaque année

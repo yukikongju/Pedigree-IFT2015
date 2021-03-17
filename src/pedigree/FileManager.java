@@ -16,7 +16,7 @@ public class FileManager {
         this.directory = directory;
     }
 
-    public void generateCSVFileForAncestors(String fileName, HashMap<Double, Integer> aieux, HashMap<Double, Integer> aieules) throws IOException{
+    public void generateCSVFileForCoalescingPoints(String fileName, HashMap<Double, Integer> aieux, HashMap<Double, Integer> aieules) throws IOException{
         File file = new File(directory + fileName);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write("time, size, sex\n");

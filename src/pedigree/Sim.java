@@ -15,6 +15,8 @@
  */
 package pedigree;
 
+import java.util.Random;
+
 /**
  *
  * @author Mikl&oacute;s Cs&#369;r&ouml;s
@@ -30,7 +32,7 @@ public class Sim implements Comparable<Sim>
     
     public static final double FIDELITY = 0.9;
     
-//    private final Random RND = new Random();
+    private static final Random RND = new Random();
     
     /** 
      * Ordering by death date.
@@ -57,7 +59,6 @@ public class Sim implements Comparable<Sim>
     private Sim mother;
     private Sim father;
     private Sim mate;
-    
     private Sex sex;
     
     protected Sim(Sim mother, Sim father, double birth, Sex sex) 

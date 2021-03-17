@@ -4,30 +4,35 @@ import java.util.HashMap;
 
 public class Coalescing {
     
-    private HashMap<Double, Integer> aieux; 
-    private HashMap<Double, Integer> aieules;
-        
+    private HashMap<Double, Integer> aieux; // coalescing points for males ancestors
+    private HashMap<Double, Integer> aieules; // coalescing points for females ancestors
+    
     public void coalesce(PQ<Sim> population) { // TO FIX
         // VERIFY: how can we ensure that lookups are O(1) and not O(n)
         aieux = new HashMap<>(); 
         aieules = new HashMap<>(); 
 
+        PQ<Sim> maleAncestors = new PQ<>();
+        PQ<Sim> femaleAncestors = new PQ<>();
+        
         // begin coalescing
         while(!population.isEmpty()){
             Sim sim = population.deleteMin();
             Sim dad = sim.getFather();
             Sim mom = sim.getMother();
             
-            // coalescing dad
-            if(!aieux.containsKey(dad.getBirthTime())){ // TODO: fix logic
-                aieux.put(dad.getBirthTime(), aieux.size());
-//                System.out.println(dad + " " + aieux.size());
+            // VERIFY: why would we need sim_id? // why would we need to check if population is only founder if we only need coalescing points
+            
+            if(!maleAncestors.contains(dad) && dad != null){ 
+                maleAncestors.insert(dad);
+            } else {
+                aieux.put(sim.getBirthTime(), population.size()); 
             }
             
-            // coalescing mom
-            if(!aieules.containsKey(mom.getBirthTime())){ // TODO: fix logic
-                aieules.put(mom.getBirthTime(), aieules.size());
-//                System.out.println(mom + " " + aieules.size());
+            if(!femaleAncestors.contains(mom) && mom != null){ 
+                femaleAncestors.insert(mom);
+            } else {
+                aieules.put(sim.getBirthTime(), population.size()); 
             }
             
         }
