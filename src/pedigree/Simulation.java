@@ -72,7 +72,7 @@ public class Simulation {
        
        // scheduling reproduction
        if (E.getSim().isFemale()){
-        Event reproduction = new Event(E.getSim(), E.getScheduledTime() + Sim.MIN_MATING_AGE_F + generateRandomWaitingTime(),
+            Event reproduction = new Event(E.getSim(), E.getScheduledTime() + Sim.MIN_MATING_AGE_F + generateRandomWaitingTime(),
                 Event.EventType.REPRODUCTION); // PROBLEM: HALT
 //           System.out.println(E.getScheduledTime() + waitingTime);
         eventQ.insert(reproduction);

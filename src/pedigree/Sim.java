@@ -179,5 +179,7 @@ public class Sim implements Comparable<Sim>
     {
         return getIdentString(this)+" ["+birthtime+".."+deathtime+", mate "+getIdentString(mate)+"\tmom "+getIdentString(getMother())+"\tdad "+getIdentString(getFather())
         +"]";
+//        return "birth: " + birthtime;
+//        return "death: " + deathtime;
     }
 }

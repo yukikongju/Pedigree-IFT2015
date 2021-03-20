@@ -35,11 +35,11 @@ public class PQ <T extends Comparable<T>>{
         return size == 0;
     }
    
-    private boolean more(int i, int j) {
+    protected boolean more(int i, int j) { // changed encapsulation to protected to allow Population to overrider compareTo
        return heap[i].compareTo(heap[j]) > 0;
     }
     
-    private boolean less(int i, int j){
+    protected boolean less(int i, int j){ // changed encapsulation to protected to allow Population to overrider compareTo
         return heap[i].compareTo(heap[j]) < 0;
     }
     
