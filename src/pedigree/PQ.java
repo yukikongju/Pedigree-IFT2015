@@ -1,4 +1,3 @@
-
 package pedigree;
 
 import java.util.Arrays;
@@ -18,11 +17,6 @@ public class PQ <T extends Comparable<T>>{
         return size;
     }
     
-    /**
-    * Copies old array in new Array with new capacity
-    * 
-    * @param newCapacity capacity the array should be resized to
-    */
     private void resize(int newCapacity) {
         T[] temp = (T[]) new Comparable[newCapacity];
         for(int i = 0; i < size; i++){
@@ -43,12 +37,7 @@ public class PQ <T extends Comparable<T>>{
         return heap[i].compareTo(heap[j]) < 0;
     }
     
-    /**
-     * Swap elements at index i and j
-     * @param i
-     * @param j 
-     */
-    private void swap(int i, int j) {
+    protected void swap(int i, int j) {
         T temp = heap[i];
         heap[i] = heap[j];
         heap[j] = temp;
@@ -68,7 +57,7 @@ public class PQ <T extends Comparable<T>>{
     }
 
     // O(log n)
-    private void swim(int index) {
+    protected void swim(int index) {
         int parent = getParentIndex(index);
         while(index > 0 && less(index, parent)){
             swap(parent, index);
@@ -77,12 +66,12 @@ public class PQ <T extends Comparable<T>>{
         }
     }
     
-    private int getParentIndex(int index){
+    protected int getParentIndex(int index){
         return (index - 1)/2;
     }
     
     // O(log n)
-    private void sink(int index){
+    protected void sink(int index){
         int child = getIndexMinChild(index);
         while(child != 0 && more(index, child)){
             swap(child, index);
@@ -91,7 +80,7 @@ public class PQ <T extends Comparable<T>>{
         }
     }
 
-    private int getIndexMinChild(int index) { // FIXED
+    protected int getIndexMinChild(int index) { // FIXED
         int left = index * 2 + 1;
         int right = (index * 2) + 2;
         int smallest = left;
@@ -100,7 +89,7 @@ public class PQ <T extends Comparable<T>>{
         return smallest;
     }
     
-    public T deleteMin(){
+    protected T deleteMin(){
         if(isEmpty()) return null;
         T topElement = heap[0];
         int indexOfLastElement = size() -1 ;
@@ -124,9 +113,6 @@ public class PQ <T extends Comparable<T>>{
         return false;
     }
     
-    /*
-    * Get random element from the heap
-    */
     public T getRandomElement(Random random){ 
         if(isEmpty()) throw new IllegalArgumentException("HEAP IS EMPTY"); // VERIFY: should never go in this because we verify that heap not empty before calling
         int index = random.nextInt(size()); 

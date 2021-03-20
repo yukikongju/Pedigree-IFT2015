@@ -59,8 +59,8 @@ public class Simulation {
     }
     
     private Sim.Sex generateSex(Random random){
-       int temp = random.nextInt(2); // generate 0 or 1
-       return Sim.Sex.values()[temp];
+       int num = random.nextInt(2); // generate 0 or 1
+       return Sim.Sex.values()[num];
     }
 
     private void birth(Event E) {
@@ -88,7 +88,7 @@ public class Simulation {
     }
 
     private void death(Event E) {
-        Sim sim =  population.deleteMin();         // remove sim from population active
+        Sim sim =  population.deleteMin();         // remove sim from population active TOFIX??
     }
 
     private void reproduction(Event E) { 

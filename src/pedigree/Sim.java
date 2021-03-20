@@ -43,7 +43,7 @@ public class Sim implements Comparable<Sim>
     @Override
     public int compareTo(Sim o) 
     {
-        return Double.compare(this.deathtime,o.deathtime);
+        return Double.compare(this.deathtime, o.deathtime);
     }
 
 //    private Sex generateSex(Random RND) {
@@ -177,9 +177,9 @@ public class Sim implements Comparable<Sim>
     @Override
     public String toString()
     {
-        return getIdentString(this)+" ["+birthtime+".."+deathtime+", mate "+getIdentString(mate)+"\tmom "+getIdentString(getMother())+"\tdad "+getIdentString(getFather())
-        +"]";
-//        return "birth: " + birthtime;
+//        return getIdentString(this)+" ["+birthtime+".."+deathtime+", mate "+getIdentString(mate)+"\tmom "+getIdentString(getMother())+"\tdad "+getIdentString(getFather())
+//        +"]";
+        return "birth: " + birthtime;
 //        return "death: " + deathtime;
     }
 }
