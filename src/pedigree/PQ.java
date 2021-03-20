@@ -17,35 +17,8 @@ public class PQ <T extends Comparable<T>>{
         return size;
     }
     
-    private void resize(int newCapacity) {
-        T[] temp = (T[]) new Comparable[newCapacity];
-        for(int i = 0; i < size; i++){
-            temp[i] = heap[i];
-        }
-        heap = temp;
-    }
-     
     public boolean isEmpty() {
         return size == 0;
-    }
-   
-    protected boolean more(int i, int j) { // changed encapsulation to protected to allow Population to overrider compareTo
-       return heap[i].compareTo(heap[j]) > 0;
-    }
-    
-    protected boolean less(int i, int j){ // changed encapsulation to protected to allow Population to overrider compareTo
-        return heap[i].compareTo(heap[j]) < 0;
-    }
-    
-    protected void swap(int i, int j) {
-        T temp = heap[i];
-        heap[i] = heap[j];
-        heap[j] = temp;
-    }
-
-    @Override
-    public String toString() {
-        return Arrays.toString(heap);
     }
     
     public void insert(T elem){
@@ -57,7 +30,7 @@ public class PQ <T extends Comparable<T>>{
     }
 
     // O(log n)
-    protected void swim(int index) {
+    private void swim(int index) {
         int parent = getParentIndex(index);
         while(index > 0 && less(index, parent)){
             swap(parent, index);
@@ -66,12 +39,12 @@ public class PQ <T extends Comparable<T>>{
         }
     }
     
-    protected int getParentIndex(int index){
+    private int getParentIndex(int index){
         return (index - 1)/2;
     }
     
     // O(log n)
-    protected void sink(int index){
+    private void sink(int index){
         int child = getIndexMinChild(index);
         while(child != 0 && more(index, child)){
             swap(child, index);
@@ -80,7 +53,7 @@ public class PQ <T extends Comparable<T>>{
         }
     }
 
-    protected int getIndexMinChild(int index) { // FIXED
+    private int getIndexMinChild(int index) { // FIXED
         int left = index * 2 + 1;
         int right = (index * 2) + 2;
         int smallest = left;
@@ -89,7 +62,7 @@ public class PQ <T extends Comparable<T>>{
         return smallest;
     }
     
-    protected T deleteMin(){
+    public T deleteMin(){
         if(isEmpty()) return null;
         T topElement = heap[0];
         int indexOfLastElement = size() -1 ;
@@ -117,6 +90,33 @@ public class PQ <T extends Comparable<T>>{
         if(isEmpty()) throw new IllegalArgumentException("HEAP IS EMPTY"); // VERIFY: should never go in this because we verify that heap not empty before calling
         int index = random.nextInt(size()); 
         return heap[index];
+    }
+    
+    private void resize(int newCapacity) {
+        T[] temp = (T[]) new Comparable[newCapacity];
+        for(int i = 0; i < size; i++){
+            temp[i] = heap[i];
+        }
+        heap = temp;
+    }
+    
+    private boolean more(int i, int j) { // changed encapsulation to protected to allow Population to overrider compareTo
+       return heap[i].compareTo(heap[j]) > 0;
+    }
+    
+    private boolean less(int i, int j){ // changed encapsulation to protected to allow Population to overrider compareTo
+        return heap[i].compareTo(heap[j]) < 0;
+    }
+    
+    private void swap(int i, int j) {
+        T temp = heap[i];
+        heap[i] = heap[j];
+        heap[j] = temp;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(heap);
     }
     
 }
