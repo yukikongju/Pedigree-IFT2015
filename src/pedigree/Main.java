@@ -19,7 +19,7 @@ public class Main {
         int Tmax = Integer.parseInt(args[1]);
         // Simulate
         Simulation simulation = new Simulation();
-        simulation.simulate(1000, 20000); // n>=1000 ; Tmax>=10n
+        simulation.simulate(n, Tmax); // n>=1000 ; Tmax>=10n
         PQ<Sim> population = simulation.getPopulation();
 
         System.out.println("Taille de population: " + population.size());
