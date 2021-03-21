@@ -161,6 +161,10 @@ public class Sim implements Comparable<Sim>
     {
         return mate;
     }
+
+    public int getID() {
+        return sim_ident;
+    }
     
     public void setMate(Sim mate){this.mate = mate;}
     

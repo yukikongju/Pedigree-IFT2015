@@ -74,13 +74,11 @@ public class Simulation {
        if (E.getSim().isFemale()){
             Event reproduction = new Event(E.getSim(), E.getScheduledTime() + Sim.MIN_MATING_AGE_F + generateRandomWaitingTime(),
                 Event.EventType.REPRODUCTION); // PROBLEM: HALT
-//           System.out.println(E.getScheduledTime() + waitingTime);
         eventQ.insert(reproduction);
        }
        
        // adding Sim to population active
        population.insert(E.getSim());
-//        System.out.println(population);
        
        // add checkpoints every 100 years for population growth
        if(E.getScheduledTime() % 100 < EPSILUM_HUNDRED_YEAR){ // FIXED: bc time is a double, each year has to fall into an error rate
@@ -95,7 +93,7 @@ public class Simulation {
     private void reproduction(Event E) { 
         Sim mom = E.getSim();
         double birthdate = E.getScheduledTime();
-        if(mom.isMatingAge(birthdate) && !population.isEmpty()){ // FIXED: doesn't try to find mate if there is no males left 
+        if(mom.isMatingAge(birthdate) && !population.isEmpty()){ // TO FIX: doesn't try to find mate if there is no males left (hasMale)
             Sim dad = findFather(birthdate, mom); 
             Sim baby = new Sim(mom, dad, birthdate, generateSex(RND));
             Event naissance = new Event(baby, E.getScheduledTime(), Event.EventType.BIRTH);
@@ -110,6 +108,14 @@ public class Simulation {
             eventQ.insert(reproduction);
         }
     }
+    
+//    private boolean hasMale(){ // check if there are male left in the population to avoid halt
+//        if(population.isEmpty()) return false;
+//        for(int i = 0; i< population.size(); i++) {
+//            if(population.getHeap()[i].isMale()) return true;
+//        }
+//        return false;
+//    }
     
     private double generateRandomWaitingTime(){
         return AgeModel.randomWaitingTime(RND, REPRODUCTION_RATE);

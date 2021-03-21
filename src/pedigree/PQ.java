@@ -73,21 +73,18 @@ public class PQ <T extends Comparable<T>>{
             swap(indexOfLastElement, 0);
             heap[indexOfLastElement] = null;
             size--; 
-//            if(size == heap.length/4){ // resizing dynamic array when quarter full
-//                resize(heap.length/2);
-//            }
             sink(0);
         }
         return topElement;
     }
     
     // linear search O(n) -> not used
-    public boolean contains(T elem){ // VERIFY: should we create population class for sim comparison instead?
-        for(int i = 0; i< heap.length; i++){
-            if(heap[i] == elem) return true;
-        }
-        return false;
-    }
+//    public boolean contains(T elem){ // VERIFY: should we create population class for sim comparison instead?
+//        for(int i = 0; i< heap.length; i++){
+//            if(heap[i] == elem) return true;
+//        }
+//        return false;
+//    }
     
     public T getRandomElement(Random random){ 
         if(isEmpty()) throw new IllegalArgumentException("HEAP IS EMPTY"); // VERIFY: should never go in this because we verify that heap not empty before calling
@@ -120,6 +117,10 @@ public class PQ <T extends Comparable<T>>{
     @Override
     public String toString() {
         return Arrays.toString(heap);
+    }
+
+    public T[] getHeap() {
+        return heap;
     }
     
 }
