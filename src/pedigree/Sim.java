@@ -15,6 +15,8 @@
  */
 package pedigree;
 
+import java.util.Random;
+
 /**
  *
  * @author Mikl&oacute;s Cs&#369;r&ouml;s
@@ -30,6 +32,8 @@ public class Sim implements Comparable<Sim>
     
     public static final double FIDELITY = 0.9;
     
+//    private static final Random RND = new Random();
+    
     /** 
      * Ordering by death date.
      * 
@@ -39,7 +43,7 @@ public class Sim implements Comparable<Sim>
     @Override
     public int compareTo(Sim o) 
     {
-        return Double.compare(this.deathtime,o.deathtime);
+        return Double.compare(this.deathtime, o.deathtime);
     }
 
 //    private Sex generateSex(Random RND) {
@@ -55,7 +59,6 @@ public class Sim implements Comparable<Sim>
     private Sim mother;
     private Sim father;
     private Sim mate;
-    
     private Sex sex;
     
     protected Sim(Sim mother, Sim father, double birth, Sex sex) 
@@ -158,6 +161,10 @@ public class Sim implements Comparable<Sim>
     {
         return mate;
     }
+
+    public int getID() {
+        return sim_ident;
+    }
     
     public void setMate(Sim mate){this.mate = mate;}
     
@@ -174,7 +181,9 @@ public class Sim implements Comparable<Sim>
     @Override
     public String toString()
     {
-        return getIdentString(this)+" ["+birthtime+".."+deathtime+", mate "+getIdentString(mate)+"\tmom "+getIdentString(getMother())+"\tdad "+getIdentString(getFather())
-        +"]";
+//        return getIdentString(this)+" ["+birthtime+".."+deathtime+", mate "+getIdentString(mate)+"\tmom "+getIdentString(getMother())+"\tdad "+getIdentString(getFather())
+//        +"]";
+//        return "birth: " + birthtime;
+        return "death: " + deathtime;
     }
 }

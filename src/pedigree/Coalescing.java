@@ -1,46 +1,70 @@
 package pedigree;
 
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.TreeMap;
 
 public class Coalescing {
-    
-    private HashMap<Double, Integer> aieux; 
-    private HashMap<Double, Integer> aieules;
-        
-    public void coalesce(PQ<Sim> population) { // TO FIX
+
+    private TreeMap<Double, Integer> PA; // coalescing points for males ancestors
+    private TreeMap<Double, Integer> MA; // coalescing points for females ancestors
+
+    public void coalesce(PQ<Sim> survivors) { // TO FIX
         // VERIFY: how can we ensure that lookups are O(1) and not O(n)
-        aieux = new HashMap<>(); 
-        aieules = new HashMap<>(); 
+        PA = new TreeMap<>();
+        MA = new TreeMap<>();
 
-        // begin coalescing
-        while(!population.isEmpty()){
-            Sim sim = population.deleteMin();
-            Sim dad = sim.getFather();
-            Sim mom = sim.getMother();
-            
-            // coalescing dad
-            if(!aieux.containsKey(dad.getBirthTime())){ // TODO: fix logic
-                aieux.put(dad.getBirthTime(), aieux.size());
-//                System.out.println(dad + " " + aieux.size());
+        // HashMap females and males
+        HashSet<Integer> identification = new HashSet<>();
+
+        Population<Sim> males = new Population<>();
+        Population<Sim> females = new Population<>();
+
+        // split population by male and female
+        while (!survivors.isEmpty()) {
+            Sim sim = survivors.deleteMin();
+            if (sim.isFemale()) {
+                females.insert(sim);
+            } else { // sim is male
+                males.insert(sim);
             }
-            
-            // coalescing mom
-            if(!aieules.containsKey(mom.getBirthTime())){ // TODO: fix logic
-                aieules.put(mom.getBirthTime(), aieules.size());
-//                System.out.println(mom + " " + aieules.size());
-            }
-            
         }
-//        System.out.println(aieux.size());
-//        System.out.println(aieules.size());
+
+        // coalescence pour les aieules
+        while (!females.isEmpty()) { 
+            Sim sim = females.deleteMax(); // enlever le plus jeune
+            Sim mother = sim.getMother();
+            if (sim.isFounder() || identification.contains(mother.getID())) { // !females.contains(mother)
+                MA.put(sim.getBirthTime(), females.size());
+                if (sim.isFounder()) break;
+            } else {
+                females.insert(mother);
+                identification.add(mother.getID());
+            }
+
+        }
+        
+        // coalescence pour les aieux
+        while (!males.isEmpty()) { // !females.isEmpty() // && !females.isOnlyFondators()
+            Sim sim = males.deleteMax(); // enlever le plus jeune
+            Sim father = sim.getFather();
+            if (sim.isFounder() || identification.contains(father.getID())) { // !females.contains(mother)
+                PA.put(sim.getBirthTime(), males.size());
+                if (sim.isFounder()) break;
+            } else {
+                males.insert(father);
+                identification.add(father.getID());
+            }
+
+        }
+
     }
 
-    public HashMap<Double, Integer> getAieules() {
-        return aieules;
+    public TreeMap<Double, Integer> getAieules() {
+        return MA;
     }
 
-    public HashMap<Double, Integer> getAieux() {
-        return aieux;
+    public TreeMap<Double, Integer> getAieux() {
+        return PA;
     }
-    
+
 }

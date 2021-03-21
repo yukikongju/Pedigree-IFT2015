@@ -1,4 +1,3 @@
-
 package pedigree;
 
 import java.util.Arrays;
@@ -18,45 +17,8 @@ public class PQ <T extends Comparable<T>>{
         return size;
     }
     
-    /**
-    * Copies old array in new Array with new capacity
-    * 
-    * @param newCapacity capacity the array should be resized to
-    */
-    private void resize(int newCapacity) {
-        T[] temp = (T[]) new Comparable[newCapacity];
-        for(int i = 0; i < size; i++){
-            temp[i] = heap[i];
-        }
-        heap = temp;
-    }
-     
     public boolean isEmpty() {
         return size == 0;
-    }
-   
-    private boolean more(int i, int j) {
-       return heap[i].compareTo(heap[j]) > 0;
-    }
-    
-    private boolean less(int i, int j){
-        return heap[i].compareTo(heap[j]) < 0;
-    }
-    
-    /**
-     * Swap elements at index i and j
-     * @param i
-     * @param j 
-     */
-    private void swap(int i, int j) {
-        T temp = heap[i];
-        heap[i] = heap[j];
-        heap[j] = temp;
-    }
-
-    @Override
-    public String toString() {
-        return Arrays.toString(heap);
     }
     
     public void insert(T elem){
@@ -102,35 +64,59 @@ public class PQ <T extends Comparable<T>>{
     
     public T deleteMin(){
         if(isEmpty()) return null;
+        if(size == heap.length/4){ // resizing dynamic array when quarter full
+            resize(heap.length/2);
+        }
         T topElement = heap[0];
         int indexOfLastElement = size() -1 ;
         if(size() > 0){ // TOFIX: redundant
             swap(indexOfLastElement, 0);
             heap[indexOfLastElement] = null;
             size--; 
-            if(size == heap.length/4){ // resizing dynamic array when quarter full
-                resize(heap.length/2);
-            }
             sink(0);
         }
         return topElement;
     }
     
-    // linear search O(n) -> not used
-    public boolean contains(T elem){ // VERIFY: should we create population class for sim comparison instead?
-        for(int i = 0; i< heap.length; i++){
-            if(heap[i] == elem) return true;
-        }
-        return false;
-    }
-    
-    /*
-    * Get random element from the heap
-    */
     public T getRandomElement(Random random){ 
         if(isEmpty()) throw new IllegalArgumentException("HEAP IS EMPTY"); // VERIFY: should never go in this because we verify that heap not empty before calling
-        int index = random.nextInt(size()); 
+        int index = random.nextInt(size()); // TO VERIFY: 
         return heap[index];
+    }
+    
+    private void resize(int newCapacity) {
+        T[] temp = (T[]) new Comparable[newCapacity];
+        for(int i = 0; i < size; i++){
+            temp[i] = heap[i];
+        }
+        heap = temp;
+    }
+    
+    private boolean more(int i, int j) { // changed encapsulation to protected to allow Population to overrider compareTo
+       return heap[i].compareTo(heap[j]) > 0;
+    }
+    
+    private boolean less(int i, int j){ // changed encapsulation to protected to allow Population to overrider compareTo
+        return heap[i].compareTo(heap[j]) < 0;
+    }
+    
+    private void swap(int i, int j) {
+        T temp = heap[i];
+        heap[i] = heap[j];
+        heap[j] = temp;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(heap);
+    }
+
+    public T[] getHeap() {
+        return heap;
+    }
+    
+    public T peek(){
+        return heap[0];
     }
     
 }
