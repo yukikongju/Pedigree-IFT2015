@@ -1,6 +1,5 @@
 package pedigree;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
 
@@ -30,13 +29,13 @@ public class Coalescing {
             }
         }
 
-        // aieules
-        while (!females.isEmpty()) { // !females.isEmpty() // && !females.isOnlyFondators()
+        // coalescence pour les aieules
+        while (!females.isEmpty()) { 
             Sim sim = females.deleteMax(); // enlever le plus jeune
             Sim mother = sim.getMother();
-            if (mother.isFounder() || identification.contains(mother.getID())) { // !females.contains(mother)
+            if (sim.isFounder() || identification.contains(mother.getID())) { // !females.contains(mother)
                 MA.put(sim.getBirthTime(), females.size());
-                if (mother.isFounder()) break;
+                if (sim.isFounder()) break;
             } else {
                 females.insert(mother);
                 identification.add(mother.getID());
@@ -44,13 +43,13 @@ public class Coalescing {
 
         }
         
-        // aieux
+        // coalescence pour les aieux
         while (!males.isEmpty()) { // !females.isEmpty() // && !females.isOnlyFondators()
             Sim sim = males.deleteMax(); // enlever le plus jeune
             Sim father = sim.getFather();
-            if (father.isFounder() || identification.contains(father.getID())) { // !females.contains(mother)
+            if (sim.isFounder() || identification.contains(father.getID())) { // !females.contains(mother)
                 PA.put(sim.getBirthTime(), males.size());
-                if (father.isFounder()) break;
+                if (sim.isFounder()) break;
             } else {
                 males.insert(father);
                 identification.add(father.getID());

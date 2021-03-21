@@ -1,6 +1,5 @@
 package pedigree;
 
-import java.util.HashMap;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -8,13 +7,10 @@ public class Simulation {
 
     public final Random RND;
     public final double REPRODUCTION_RATE;
-
     public static final int HUNDRED_YEARS = 100;
 
-//    public static final double EPSILUM_HUNDRED_YEAR = 0.1; // error we are willing to accept when comparing time to hundred year
     private PQ<Event> eventQ; // PQ<Event> is sorted chronologically by death 
     private PQ<Sim> population; // PQ<Sim> is sorted chronologically by death
-//    private PriorityQueue<Event> eventQ; 
     private final AgeModel ageModel;
 
     private TreeMap<Double, Integer> populationGrowth;
@@ -49,7 +45,6 @@ public class Simulation {
             if (E.getScheduledTime() > lastReportTime + HUNDRED_YEARS) {
                 populationGrowth.put(E.getScheduledTime(), population.size());
                 lastReportTime = E.getScheduledTime();
-//                System.out.println(populationGrowth);
             }
 
             if (E.getScheduledTime() > Tmax) {
@@ -70,7 +65,6 @@ public class Simulation {
                         break;
                 }
             }
-//            System.out.println("YEAR : + " + E.getScheduledTime() + " EVENT TYPE " + E.getEventType().toString());
         }
     }
 

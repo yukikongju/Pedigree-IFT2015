@@ -78,17 +78,9 @@ public class PQ <T extends Comparable<T>>{
         return topElement;
     }
     
-    // linear search O(n) -> not used
-//    public boolean contains(T elem){ // VERIFY: should we create population class for sim comparison instead?
-//        for(int i = 0; i< heap.length; i++){
-//            if(heap[i] == elem) return true;
-//        }
-//        return false;
-//    }
-    
     public T getRandomElement(Random random){ 
         if(isEmpty()) throw new IllegalArgumentException("HEAP IS EMPTY"); // VERIFY: should never go in this because we verify that heap not empty before calling
-        int index = random.nextInt(size()-1); // TO VERIFY: 
+        int index = random.nextInt(size()); // TO VERIFY: 
         return heap[index];
     }
     
