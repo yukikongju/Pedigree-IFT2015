@@ -3,6 +3,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import time
 
 def plotCoalescing():
     file_path = "../data/coalescing.csv"
@@ -80,6 +81,11 @@ def plotScatter():
     plt.xlabel("Years")
     plt.legend(loc = 'center left')
     plt.show()
+    #  identifiant = time.time()
+    identifiant = np.random.randint(100)
+    file_name = '../data/plot' + str(identifiant) + '.pdf'
+    plt.savefig(file_name)
+    #  plt.savefig('../data/plot.png')
 
 if __name__ == "__main__":
     #  plotCoalescing()
