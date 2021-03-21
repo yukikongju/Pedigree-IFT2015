@@ -82,8 +82,8 @@ public class Simulation {
         } 
         
         // scheduling death
-        double deathTime = generateLifeLength() + E.getScheduledTime(); // lifespan of a Sim
-        E.getSim().setDeathTime(deathTime); // TO FIX? should we set death to global deathtime or relative to sim
+        double deathTime = generateLifeLength() + E.getScheduledTime(); 
+        E.getSim().setDeathTime(deathTime); 
         Event death = new Event(E.getSim(), deathTime, Event.EventType.DEATH);
         eventQ.insert(death);
         population.insert(E.getSim()); // adding Sim to population active
@@ -91,7 +91,7 @@ public class Simulation {
         // scheduling reproduction
         double reproductionTime = E.getScheduledTime() + Sim.MIN_MATING_AGE_F + generateRandomWaitingTime();
         if (E.getSim().isFemale() && E.getSim().isMatingAge(reproductionTime)) { // schedule reproduction if female isn't dead
-            Event reproduction = new Event(E.getSim(), reproductionTime, Event.EventType.REPRODUCTION); // PROBLEM: HALT
+            Event reproduction = new Event(E.getSim(), reproductionTime, Event.EventType.REPRODUCTION); 
             eventQ.insert(reproduction);
         }
 
@@ -119,7 +119,7 @@ public class Simulation {
 
                 // Schedule next reproduction if mom isn't dead by then
                 double reproductionTime = generateRandomWaitingTime() + E.getScheduledTime();
-                if (E.getSim().isMatingAge(reproductionTime)) { // VERIFY
+                if (E.getSim().isMatingAge(reproductionTime)) { 
                     Event reproduction = new Event(E.getSim(), reproductionTime,
                             Event.EventType.REPRODUCTION);
                     eventQ.insert(reproduction);
@@ -137,7 +137,7 @@ public class Simulation {
         return ageModel.randomAge(RND); // generate lifespan of a Sim
     }
 
-    private Sim findFather(double time, Sim mom) { // PROBLEM 2: get caught up in infinite loop from time to time
+    private Sim findFather(double time, Sim mom) { // FIXED: doesn't try to find a father if there is none left in population
         Sim father = null;
         int essai = 0;
         if (!mom.isInARelationship(time) || RND.nextDouble() > Sim.FIDELITY) { // if mom is single, has dead husband or mate cheated, find new partner
