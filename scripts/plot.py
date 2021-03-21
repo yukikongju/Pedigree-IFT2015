@@ -59,7 +59,7 @@ def plotScatter():
     #  print(sizef)
     # plotter scatter plot with line
     xfemales = females['time']
-    #  xfemales /= 1000
+    #  xfemales /= 100
     yfemales = females['size']
     yfemales = np.log10(yfemales)
     xmales = males['time']
