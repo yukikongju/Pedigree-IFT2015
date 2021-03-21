@@ -100,7 +100,7 @@ public class Simulation {
         if(sim.isMale()){
             this.nbHommes--;
         } 
-        if(population.isEmpty()) System.out.println("POPULATION ÉTEINTE À LA DATE : " +" " +E.getScheduledTime());
+        if(population.isEmpty()) System.out.println("POPULATION ÉTEINTE À LA DATE : " +" " +E.getScheduledTime() + "  RECOMMENCEZ LA SIMULATION");
     }
 
     private void reproduction(Event E) {
