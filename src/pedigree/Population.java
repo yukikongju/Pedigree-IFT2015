@@ -15,9 +15,12 @@ public class Population <T extends Comparable<T>> { // <T extends Comparable<T>>
         heap = (T[]) new Comparable[STARTING_CAPACITY];
     }
     
-    public boolean isOnlyFondators(){ // TODO
+    public boolean isOnlyFondators(){ // TOFIX
         // check if population is only made of fondators
-        
+        for(int i = 0; i< size; i++){
+            Sim sim = (Sim) heap[i];
+            if(!sim.isFounder()) return false;
+        }
         return true;
     }
 
@@ -58,15 +61,18 @@ public class Population <T extends Comparable<T>> { // <T extends Comparable<T>>
     
     public T deleteMax(){ // TOCHANGE
         if(isEmpty()) return null;
+        if(size == heap.length/4){ // resizing dynamic array when quarter full
+                resize(heap.length/2);
+        }
         T topElement = heap[0];
         int indexOfLastElement = size() -1 ;
         if(size() > 0){ // TOFIX: redundant
             swap(indexOfLastElement, 0);
             heap[indexOfLastElement] = null;
             size--; 
-            if(size == heap.length/4){ // resizing dynamic array when quarter full
-                resize(heap.length/2);
-            }
+//            if(size == heap.length/4){ // resizing dynamic array when quarter full
+//                resize(heap.length/2);
+//            }
             sink(0);
         }
         return topElement;

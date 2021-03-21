@@ -64,15 +64,18 @@ public class PQ <T extends Comparable<T>>{
     
     public T deleteMin(){
         if(isEmpty()) return null;
+        if(size == heap.length/4){ // resizing dynamic array when quarter full
+            resize(heap.length/2);
+        }
         T topElement = heap[0];
         int indexOfLastElement = size() -1 ;
         if(size() > 0){ // TOFIX: redundant
             swap(indexOfLastElement, 0);
             heap[indexOfLastElement] = null;
             size--; 
-            if(size == heap.length/4){ // resizing dynamic array when quarter full
-                resize(heap.length/2);
-            }
+//            if(size == heap.length/4){ // resizing dynamic array when quarter full
+//                resize(heap.length/2);
+//            }
             sink(0);
         }
         return topElement;
