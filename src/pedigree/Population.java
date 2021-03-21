@@ -113,13 +113,5 @@ public class Population <T extends Comparable<T>> { // <T extends Comparable<T>>
     public String toString() {
         return Arrays.toString(heap);
     }
-    
-    // linear search O(n) -> not used
-//    public boolean contains(T elem){ // VERIFY: should we create population class for sim comparison instead?
-//        for(int i = 0; i< heap.length; i++){
-//            if(heap[i] == elem) return true;
-//        }
-//        return false;
-//    }
-    
+
 }

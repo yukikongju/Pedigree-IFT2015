@@ -38,11 +38,9 @@ public class Simulation {
             Event E = new Event(fondateur, 0, Event.EventType.BIRTH);
             eventQ.insert(E);
         }
-
         // Begin simulation
         while (!eventQ.isEmpty()) {
             Event E = (Event) eventQ.deleteMin();
-
             // add checkpoints every 100 years
             if (E.getScheduledTime() > lastReportTime + HUNDRED_YEARS) {
                 populationGrowth.put(E.getScheduledTime(), population.size());
@@ -103,7 +101,7 @@ public class Simulation {
         if(sim.isMale()){
             this.nbHommes--;
         } 
-        if(population.isEmpty()) System.out.println("pop 0" +"   " +E.getScheduledTime());
+        if(population.isEmpty()) System.out.println("POPULATION ÉTEINTE À LA DATE : " +" " +E.getScheduledTime() + "  RECOMMENCEZ LA SIMULATION");
     }
 
     private void reproduction(Event E) {
@@ -126,7 +124,6 @@ public class Simulation {
                     eventQ.insert(reproduction);
                 }
             }
-
         }
     }
 
