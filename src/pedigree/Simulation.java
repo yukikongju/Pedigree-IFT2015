@@ -1,5 +1,6 @@
 package pedigree;
 
+import java.util.HashMap;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -16,8 +17,8 @@ public class Simulation {
 //    private PriorityQueue<Event> eventQ; 
     private final AgeModel ageModel;
 
-//    private HashMap<Double, Integer> populationGrowth;
-    private TreeMap<Double, Integer> populationGrowth; // cannot use HashMap because it doesn't keep order. TreeMap insert is O(log n), which is not good. 
+    private TreeMap<Double, Integer> populationGrowth;
+//    private TreeMap<Double, Integer> populationGrowth; // cannot use HashMap because it doesn't keep order. TreeMap insert is O(log n), which is not good. 
 
     public Simulation() {
         ageModel = new AgeModel();
@@ -83,8 +84,8 @@ public class Simulation {
         double deathTime = generateLifeLength() + E.getScheduledTime(); // lifespan of a Sim
         E.getSim().setDeathTime(deathTime); // TO FIX? should we set death to global deathtime or relative to sim
         Event death = new Event(E.getSim(), deathTime, Event.EventType.DEATH);
-//        System.out.println(E.getSim());
         eventQ.insert(death);
+        population.insert(E.getSim()); // adding Sim to population active
 
         // scheduling reproduction
         double reproductionTime = E.getScheduledTime() + Sim.MIN_MATING_AGE_F + generateRandomWaitingTime();
@@ -92,9 +93,6 @@ public class Simulation {
             Event reproduction = new Event(E.getSim(), reproductionTime, Event.EventType.REPRODUCTION); // PROBLEM: HALT
             eventQ.insert(reproduction);
         }
-
-        // adding Sim to population active
-        population.insert(E.getSim());
 
     }
 
@@ -120,7 +118,7 @@ public class Simulation {
         }
         // Schedule next reproduction if mom isn't dead by then
         double reproductionTime = generateRandomWaitingTime() + E.getScheduledTime();
-        if (E.getSim().isMatingAge(reproductionTime )) { // VERIFY
+        if (E.getSim().isMatingAge(reproductionTime)) { // VERIFY
             Event reproduction = new Event(E.getSim(), reproductionTime,
                     Event.EventType.REPRODUCTION);
             eventQ.insert(reproduction);
@@ -147,7 +145,7 @@ public class Simulation {
         if (!mom.isInARelationship(time) || RND.nextDouble() > Sim.FIDELITY) { // if mom is single, has dead husband or mate cheated, find new partner
             do {
                 Sim potentialMate = (Sim) population.getRandomElement(RND);
-                if (potentialMate.getSex() != mom.getSex() && potentialMate.isMatingAge(time)) { // if mate is a fertile male
+                if (potentialMate.isMale() && potentialMate.isMatingAge(time)) { // if mate is a fertile male
                     if (mom.isInARelationship(time) || !potentialMate.isInARelationship(time) || RND.nextDouble() > Sim.FIDELITY) { // if male wants to cheat
                         father = potentialMate;
                     }

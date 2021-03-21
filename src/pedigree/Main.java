@@ -2,6 +2,7 @@ package pedigree;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 public class Main {
@@ -15,19 +16,19 @@ public class Main {
         simulation.simulate(1000, 20000); // n>=1000 ; Tmax>=10n
         PQ<Sim> population = simulation.getPopulation();
         
-        System.out.println(population.size());
+        System.out.println("Taille de population: " + population.size());
         
         // Coalescing
         Coalescing coalescing = new Coalescing();
         coalescing.coalesce(population);
         
         // Fetch HashMap for "Etude Empirique"
-//        HashMap<Double, Integer> populationGrowth = simulation.getPopulationGrowth();
         TreeMap<Double, Integer> populationGrowth = simulation.getPopulationGrowth();
         TreeMap<Double, Integer> aieux = coalescing.getAieux();
         TreeMap<Double, Integer> aieules = coalescing.getAieules();
         
-//        System.out.println(populationGrowth);
+        System.out.println("Nombre de lignées paternelles: " + aieux.size());
+        System.out.println("Nombre de lignées paternelles: " + aieules.size());
 
         // Generate CSV files from HashMaps
         String downloadPath = new File("").getAbsolutePath().concat("/data/");

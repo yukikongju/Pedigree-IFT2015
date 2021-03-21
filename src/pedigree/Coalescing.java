@@ -30,74 +30,34 @@ public class Coalescing {
             }
         }
 
-        System.out.println(females.size());
-        System.out.println(males.size());
-
         // aieules
         while (!females.isEmpty()) { // !females.isEmpty() // && !females.isOnlyFondators()
             Sim sim = females.deleteMax(); // enlever le plus jeune
             Sim mother = sim.getMother();
-//            System.out.println(mother.getMother());
-//            if(sim.isFounder()) break;
-//            if(mother.isFounder()) break;
-            if (mother == null || identification.contains(sim.getID())) { // !females.contains(mother)
+            if (mother.isFounder() || identification.contains(mother.getID())) { // !females.contains(mother)
                 MA.put(sim.getBirthTime(), females.size());
-                if (mother == null) {
-                    break;
-                }
-
+                if (mother.isFounder()) break;
             } else {
                 females.insert(mother);
-                identification.add(sim.getID());
-//                System.out.println(sim.getBirthTime()+ "," +  females.size());
+                identification.add(mother.getID());
+            }
+
+        }
+        
+        // aieux
+        while (!males.isEmpty()) { // !females.isEmpty() // && !females.isOnlyFondators()
+            Sim sim = males.deleteMax(); // enlever le plus jeune
+            Sim father = sim.getFather();
+            if (father.isFounder() || identification.contains(father.getID())) { // !females.contains(mother)
+                PA.put(sim.getBirthTime(), males.size());
+                if (father.isFounder()) break;
+            } else {
+                males.insert(father);
+                identification.add(father.getID());
             }
 
         }
 
-        // aieux
-//        while(!males.isEmpty()){
-//            Sim sim = males.deleteMax(); // enlever le plus jeune
-//            Sim father = sim.getFather();
-//            if(sim.isFounder()) break;
-//            if(father != null && !males.contains(father)){
-//                males.insert(father);
-//            }
-//            aieules.put(sim.getBirthTime(), males.size());
-//        }
-        // split population left into males and females
-//        while(!population.isEmpty()){
-//            Sim sim = population.deleteMin();
-//            if(sim.isFemale()){
-//                femaleAncestors.insert(sim);
-//            }
-//            if(sim.isMale()){
-//                maleAncestors.insert(sim);
-//            }
-//        }
-        // begin coalescing
-        // good stuffs
-//        while(population.size() > 1){ //!population.isEmpty() -> pk le prof demande cette implementation
-//            Sim sim = population.deleteMin();
-//            Sim dad = sim.getFather();
-//            Sim mom = sim.getMother();
-//            if(sim.isFounder()) break;
-//            // VERIFY: why would we need sim_id? // why would we need to check if population is only founder if we only need coalescing points
-//            
-//            if(!population.contains(dad) && dad != null){ 
-//                population.insert(dad);
-//            } else { // population contains dad
-//                aieux.put(sim.getBirthTime(), population.size());
-//                System.out.println("tt " + population.size());
-//            }
-//            
-//            if(!population.contains(mom) && mom != null){ 
-//                population.insert(mom);
-//            } else {
-//                aieules.put(sim.getBirthTime(), population.size()); 
-//            }
-//        }
-//        System.out.println(aieux.size());
-//        System.out.println(aieules.size());
     }
 
     public TreeMap<Double, Integer> getAieules() {
