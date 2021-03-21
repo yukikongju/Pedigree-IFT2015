@@ -12,7 +12,6 @@ public class Coalescing {
         // TreeMap ensure that the order is kept vs hashmap that doesn't
         PA = new TreeMap<>();
         MA = new TreeMap<>();
-
         // keeping track of ancestors identification
         HashSet<Integer> identification = new HashSet<>();
 
@@ -28,7 +27,6 @@ public class Coalescing {
                 males.insert(sim);
             }
         }
-
         // coalescence pour les aieules
         while (!females.isEmpty()) { 
             Sim sim = females.deleteMax(); // enlever le plus jeune
@@ -40,9 +38,7 @@ public class Coalescing {
                 females.insert(mother);
                 identification.add(mother.getID());
             }
-
         }
-        
         // coalescence pour les aieux
         while (!males.isEmpty()) { 
             Sim sim = males.deleteMax(); // enlever le plus jeune
@@ -54,9 +50,7 @@ public class Coalescing {
                 males.insert(father);
                 identification.add(father.getID());
             }
-
         }
-
     }
 
     public TreeMap<Double, Integer> getAieules() {
