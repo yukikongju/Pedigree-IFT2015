@@ -5,13 +5,13 @@ import java.util.HashSet;
 
 public class Coalescing {
     
-    private HashMap<Double, Integer> aieux; // coalescing points for males ancestors
-    private HashMap<Double, Integer> aieules; // coalescing points for females ancestors
+    private HashMap<Double, Integer> PA; // coalescing points for males ancestors
+    private HashMap<Double, Integer> MA; // coalescing points for females ancestors
     
     public void coalesce(PQ<Sim> survivors) { // TO FIX
         // VERIFY: how can we ensure that lookups are O(1) and not O(n)
-        aieux = new HashMap<>(); 
-        aieules = new HashMap<>(); 
+        PA = new HashMap<>(); 
+        MA = new HashMap<>(); 
 
         // HashMap females and males
         HashSet<Integer> identification = new HashSet<>();
@@ -37,11 +37,11 @@ public class Coalescing {
             Sim sim = females.deleteMax(); // enlever le plus jeune
             Sim mother = sim.getMother();
             if(sim.isFounder()) break;
-            if(mother != null || identification.contains(sim.getID())){ // !females.contains(mother)
-                aieules.put(sim.getBirthTime(), females.size());
-            } else {
+            if(mother != null && !identification.contains(sim.getID())){ // !females.contains(mother)
                 females.insert(mother);
                 identification.add(sim.getID());
+            } else {
+                MA.put(sim.getBirthTime(), females.size());
             }
             
         }
@@ -99,11 +99,11 @@ public class Coalescing {
     }
 
     public HashMap<Double, Integer> getAieules() {
-        return aieules;
+        return MA;
     }
 
     public HashMap<Double, Integer> getAieux() {
-        return aieux;
+        return PA;
     }
     
 }

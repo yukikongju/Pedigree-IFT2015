@@ -1,17 +1,20 @@
 package pedigree;
 
 import java.util.HashMap;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 public class Simulation {
     
     public final Random RND; 
     public final double REPRODUCTION_RATE;
+    public double lastReportTime;
     
     public static final double EPSILUM_HUNDRED_YEAR = 0.1; // error we are willing to accept when comparing time to hundred year
     
     private PQ<Event> eventQ; // PQ<Event> is sorted chronologically by death 
     private PQ<Sim> population; // PQ<Sim> is sorted chronologically by death
+//    private PriorityQueue<Event> eventQ; 
     private final AgeModel ageModel;
     
     private HashMap<Double, Integer> populationGrowth;
@@ -19,6 +22,7 @@ public class Simulation {
     public Simulation() { 
         ageModel = new AgeModel();
         RND = new Random();
+        lastReportTime = 0;
         REPRODUCTION_RATE = 2 / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F); // probabilité d'avoir un bébé à chaque année
     }
 
@@ -38,6 +42,13 @@ public class Simulation {
         // Begin simulation
         while(!eventQ.isEmpty()){
             Event E = (Event) eventQ.deleteMin();
+            
+            // add checkpoints every 100 years
+//            if(E.getScheduledTime() > lastReportTime+100){
+//                populationGrowth.put(E.getScheduledTime(), population.size());
+//                lastReportTime = E.getScheduledTime();
+//            }
+            
             if(E.getScheduledTime() > Tmax) break; // arrêter à Tmax 
             if (E.getSim().getDeathTime() >= E.getScheduledTime()){ // FIXED: we don't want a strict inequality bc we won't be able to simulate death
                 switch (E.getEventType()) { // NOTE: eventType should never be null, so we don't have to check if it's null
@@ -96,11 +107,10 @@ public class Simulation {
         if(mom.isMatingAge(birthdate) && !population.isEmpty()){ // TO FIX: doesn't try to find mate if there is no males left (hasMale)
             Sim dad = findFather(birthdate, mom); 
             Sim baby = new Sim(mom, dad, birthdate, generateSex(RND));
-            Event naissance = new Event(baby, E.getScheduledTime(), Event.EventType.BIRTH);
-            eventQ.insert(naissance);
-            
             dad.setMate(mom);
             mom.setMate(dad);
+            Event naissance = new Event(baby, E.getScheduledTime(), Event.EventType.BIRTH);
+            eventQ.insert(naissance);
             
             // Schedule next reproduction
             Event reproduction = new Event(E.getSim(), E.getScheduledTime() + generateRandomWaitingTime(),

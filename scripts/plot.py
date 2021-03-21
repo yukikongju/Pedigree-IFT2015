@@ -32,7 +32,7 @@ def plotPopulationGrowth():
 
 def plotCoalescingAndPopulation():
     file_coalescing = "../data/coalescing.csv"
-    file_coalescing = "goy.csv"
+    #  file_coalescing = "goy.csv"
     file_population = "../data/population.csv"
     df = pd.read_csv(file_coalescing)
     df = df.sort_values(by = 'time') # TO FIX: check condition
