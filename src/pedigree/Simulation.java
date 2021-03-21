@@ -44,7 +44,7 @@ public class Simulation {
             // add checkpoints every 100 years
             if (E.getScheduledTime() > lastReportTime + HUNDRED_YEARS) {
                 populationGrowth.put(E.getScheduledTime(), population.size());
-                System.out.println("Temps: " + E.getScheduledTime() + " Size: " + population.size());
+//                System.out.println("Temps: " + E.getScheduledTime() + " Size: " + population.size());
                 lastReportTime = E.getScheduledTime();
             }
 
