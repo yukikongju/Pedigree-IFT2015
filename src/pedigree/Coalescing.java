@@ -7,23 +7,55 @@ public class Coalescing {
     private HashMap<Double, Integer> aieux; // coalescing points for males ancestors
     private HashMap<Double, Integer> aieules; // coalescing points for females ancestors
     
-    public void coalesce(PQ<Sim> population) { // TO FIX
+    public void coalesce(PQ<Sim> survivors) { // TO FIX
         // VERIFY: how can we ensure that lookups are O(1) and not O(n)
         aieux = new HashMap<>(); 
         aieules = new HashMap<>(); 
 
-        PQ<Sim> maleAncestors = new PQ<>();
-        PQ<Sim> femaleAncestors = new PQ<>();
+//        PQ<Sim> maleAncestors = new PQ<>();
+//        PQ<Sim> femaleAncestors = new PQ<>();
         
-        Population popTest = new Population();
+        Population<Sim> males = new Population<>();
+        Population<Sim> females = new Population<>();
         
-        // CHECKK: testing Population PQ
-        while(!population.isEmpty()){
-            Sim sim = population.deleteMin();
-            popTest.insert(sim);
-            System.out.println(popTest);
+//        Population population = new Population();
+        
+        // split population by male and female
+        while(!survivors.isEmpty()){
+            Sim sim = survivors.deleteMin();
+            if(sim.isFemale()){
+                females.insert(sim);
+//                System.out.println(females);
+            } else { // sim is male
+                males.insert(sim);
+            }
         }
-
+        
+        while(!females.isEmpty()){
+            females.deleteMax();
+//            System.out.println(females);
+        }
+        
+        // aieules
+//        while(!females.isEmpty()){
+////            System.out.println(females.deleteMax());
+//            females.deleteMax();
+//            System.out.println(females);
+//        }
+        
+        // aieules
+//        while(!females.isEmpty()){
+//            Sim sim = females.deleteMax(); // enlever le plus jeune
+//            Sim mother = sim.getMother();
+//            if(sim.isFounder()) break;
+//            if(mother != null && !females.contains(mother)){
+//                females.insert(mother);
+//            } else {
+//                aieules.put(sim.getBirthTime(), females.size());
+//            }
+//        }
+        
+        
         
         // split population left into males and females
 //        while(!population.isEmpty()){
@@ -37,17 +69,6 @@ public class Coalescing {
 //        }
         
         // begin coalescing
-        
-//        do{
-//            Sim sim = maleAncestors.deleteMin();
-//            Sim father = sim.getFather();
-//            if(sim.isFounder()) break;
-//            if(father != null && !maleAncestors.contains(father)){
-//                maleAncestors.insert(father);
-//            } 
-//            aieux.put(sim.getBirthTime(), maleAncestors.size());
-//        } while(!maleAncestors.isEmpty());
-        
         // good stuffs
 
 //        while(population.size() > 1){ //!population.isEmpty() -> pk le prof demande cette implementation

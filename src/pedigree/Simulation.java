@@ -80,6 +80,7 @@ public class Simulation {
        
        // adding Sim to population active
        population.insert(E.getSim());
+//        System.out.println(population);
        
        // add checkpoints every 100 years for population growth
        if(E.getScheduledTime() % 100 < EPSILUM_HUNDRED_YEAR){ // FIXED: bc time is a double, each year has to fall into an error rate
@@ -99,6 +100,7 @@ public class Simulation {
             Sim baby = new Sim(mom, dad, birthdate, generateSex(RND));
             Event naissance = new Event(baby, E.getScheduledTime(), Event.EventType.BIRTH);
             eventQ.insert(naissance);
+            
             dad.setMate(mom);
             mom.setMate(dad);
             

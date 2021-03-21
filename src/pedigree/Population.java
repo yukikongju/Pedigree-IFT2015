@@ -15,10 +15,6 @@ public class Population <T extends Comparable<T>> { // <T extends Comparable<T>>
         heap = (T[]) new Comparable[STARTING_CAPACITY];
     }
     
-    public boolean contains(Sim sim){ // TODO
-        return true;
-    }
-    
     public boolean isOnlyFondators(){ // TODO
         // check if population is only made of fondators
         
@@ -43,12 +39,21 @@ public class Population <T extends Comparable<T>> { // <T extends Comparable<T>>
     }
 
     private void sink(int index) {
-        int parent = getParentIndex(index);
-        while(index > 0 && less(index, parent)){
-            swap(parent, index);
-            index = parent;
-            parent = getParentIndex(index);
+        int child = getIndexMaxChild(index);
+        while(child != 0 && less(index, child)){
+            swap(child, index);
+            index = child;
+            child = getIndexMaxChild(index);
         }
+    }
+    
+    private int getIndexMaxChild(int index) { // FIXED
+        int left = index * 2 + 1;
+        int right = (index * 2) + 2;
+        int biggest = left;
+        if(left >= size) return 0; // VERIFY: if child doesn't exist, return 0
+        if(right < size() && more(right, biggest)) biggest = right; // check if right is smaller than left
+        return biggest;
     }
     
     public T deleteMax(){ // TOCHANGE
@@ -104,6 +109,15 @@ public class Population <T extends Comparable<T>> { // <T extends Comparable<T>>
     @Override
     public String toString() {
         return Arrays.toString(heap);
+    }
+    
+    // linear search O(n) -> not used
+    public boolean contains(T elem){ // VERIFY: should we create population class for sim comparison instead?
+        for(int i = 0; i< heap.length; i++){
+            if(heap[i] == elem) return true;
+            
+        }
+        return false;
     }
     
 }
