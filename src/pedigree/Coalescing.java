@@ -8,12 +8,12 @@ public class Coalescing {
     private TreeMap<Double, Integer> PA; // coalescing points for males ancestors
     private TreeMap<Double, Integer> MA; // coalescing points for females ancestors
 
-    public void coalesce(PQ<Sim> survivors) { // TO FIX
-        // VERIFY: how can we ensure that lookups are O(1) and not O(n)
+    public void coalesce(PQ<Sim> survivors) { 
+        // TreeMap ensure that the order is kept vs hashmap that doesn't
         PA = new TreeMap<>();
         MA = new TreeMap<>();
 
-        // HashMap females and males
+        // keeping track of ancestors identification
         HashSet<Integer> identification = new HashSet<>();
 
         Population<Sim> males = new Population<>();
@@ -33,7 +33,7 @@ public class Coalescing {
         while (!females.isEmpty()) { 
             Sim sim = females.deleteMax(); // enlever le plus jeune
             Sim mother = sim.getMother();
-            if (sim.isFounder() || identification.contains(mother.getID())) { // !females.contains(mother)
+            if (sim.isFounder() || identification.contains(mother.getID())) { 
                 MA.put(sim.getBirthTime(), females.size());
                 if (sim.isFounder()) break;
             } else {
@@ -44,10 +44,10 @@ public class Coalescing {
         }
         
         // coalescence pour les aieux
-        while (!males.isEmpty()) { // !females.isEmpty() // && !females.isOnlyFondators()
+        while (!males.isEmpty()) { 
             Sim sim = males.deleteMax(); // enlever le plus jeune
             Sim father = sim.getFather();
-            if (sim.isFounder() || identification.contains(father.getID())) { // !females.contains(mother)
+            if (sim.isFounder() || identification.contains(father.getID())) { 
                 PA.put(sim.getBirthTime(), males.size());
                 if (sim.isFounder()) break;
             } else {

@@ -3,7 +3,7 @@ package pedigree;
 import java.util.Arrays;
 import java.util.Random;
 
-public class PQ <T extends Comparable<T>>{
+public class PQ <T extends Comparable<T>>{ // minHeap
     
     T[] heap;
     int size = 0;
