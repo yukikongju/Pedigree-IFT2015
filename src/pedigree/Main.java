@@ -17,7 +17,7 @@ public class Main {
 //        int n = Integer.parseInt(args[0]);
 //        int Tmax = Integer.parseInt(args[1]);
         int n = 1000;
-        int Tmax = 2000;
+        int Tmax = 20000;
         // Simulate
         Simulation simulation = new Simulation();
         simulation.simulate(n, Tmax); // n>=1000 ; Tmax>=10n

@@ -79,13 +79,17 @@ def plotScatter():
     ypopulation = np.log10(ypopulation)
     plt.plot(xpopulation, ypopulation, "green", label = 'Population')
     plt.xlabel("Years")
+    plt.ylabel("Size (log10)")
+    #  y_ticks = [0,10,100,1000]
+    #  plt.yticks(y_ticks, rotation = 'vertical')
     plt.legend(loc = 'center left')
-    plt.show()
     #  identifiant = time.time()
     identifiant = np.random.randint(100)
     file_name = '../data/plot' + str(identifiant) + '.pdf'
+    plt.draw()
     plt.savefig(file_name)
     #  plt.savefig('../data/plot.png')
+    plt.show()
 
 if __name__ == "__main__":
     #  plotCoalescing()
