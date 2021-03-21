@@ -12,9 +12,6 @@ public class Coalescing {
         aieux = new HashMap<>(); 
         aieules = new HashMap<>(); 
 
-//        PQ<Sim> maleAncestors = new PQ<>();
-//        PQ<Sim> femaleAncestors = new PQ<>();
-        
         Population<Sim> males = new Population<>();
         Population<Sim> females = new Population<>();
         
@@ -31,28 +28,19 @@ public class Coalescing {
             }
         }
         
+        System.out.println(females.size());
+        System.out.println(males.size());
+        
+        // aieules
         while(!females.isEmpty()){
-            females.deleteMax();
-//            System.out.println(females);
-        }
-        
-        // aieules
-//        while(!females.isEmpty()){
-////            System.out.println(females.deleteMax());
-//            females.deleteMax();
-//            System.out.println(females);
-//        }
-        
-        // aieules
-//        while(!females.isEmpty()){
-//            Sim sim = females.deleteMax(); // enlever le plus jeune
-//            Sim mother = sim.getMother();
-//            if(sim.isFounder()) break;
-//            if(mother != null && !females.contains(mother)){
-//                females.insert(mother);
-//            } else {
-//                aieules.put(sim.getBirthTime(), females.size());
-//            }
+            Sim sim = females.deleteMax(); // enlever le plus jeune
+            Sim mother = sim.getMother();
+            if(sim.isFounder()) break;
+            if(mother != null && !females.contains(mother)){
+                females.insert(mother);
+            } 
+                aieules.put(sim.getBirthTime(), females.size());
+            }
 //        }
         
         
