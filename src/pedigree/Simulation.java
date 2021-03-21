@@ -83,7 +83,7 @@ public class Simulation {
         double deathTime = generateLifeLength() + E.getScheduledTime(); // lifespan of a Sim
         E.getSim().setDeathTime(deathTime); // TO FIX? should we set death to global deathtime or relative to sim
         Event death = new Event(E.getSim(), deathTime, Event.EventType.DEATH);
-//        System.out.println(death);
+//        System.out.println(E.getSim());
         eventQ.insert(death);
 
         // scheduling reproduction
@@ -104,14 +104,14 @@ public class Simulation {
 
     private void reproduction(Event E) {
         Sim mom = E.getSim();
-        double birthdate = E.getScheduledTime();
-        if (mom.isMatingAge(birthdate) && !population.isEmpty()) { // TO FIX: doesn't try to find mate if there is no males left (hasMale)
-            Sim dad = findFather(birthdate, mom);
-            Sim baby = new Sim(mom, dad, birthdate, generateSex(RND));
+        double birthTime = E.getScheduledTime();
+        if (mom.isMatingAge(birthTime) && !population.isEmpty()) { // TO FIX: doesn't try to find mate if there is no males left (hasMale)
+            Sim dad = findFather(birthTime, mom);
+            Sim baby = new Sim(mom, dad, birthTime, generateSex(RND));
             dad.setMate(mom);
             mom.setMate(dad);
-            Event naissance = new Event(baby, E.getScheduledTime(), Event.EventType.BIRTH);
-            eventQ.insert(naissance);
+            Event birth = new Event(baby, birthTime, Event.EventType.BIRTH);
+            eventQ.insert(birth);
 
 //            double reproductionWaitingTime = generateRandomWaitingTime();
 //            Event reproduction = new Event(E.getSim(), E.getScheduledTime() + reproductionWaitingTime,
@@ -119,9 +119,9 @@ public class Simulation {
 //            eventQ.insert(reproduction);
         }
         // Schedule next reproduction if mom isn't dead by then
-        double reproductionWaitingTime = generateRandomWaitingTime();
-        if (E.getSim().isMatingAge(reproductionWaitingTime + E.getScheduledTime())) { // VERIFY
-            Event reproduction = new Event(E.getSim(), E.getScheduledTime() + reproductionWaitingTime,
+        double reproductionTime = generateRandomWaitingTime() + E.getScheduledTime();
+        if (E.getSim().isMatingAge(reproductionTime )) { // VERIFY
+            Event reproduction = new Event(E.getSim(), reproductionTime,
                     Event.EventType.REPRODUCTION);
             eventQ.insert(reproduction);
         }
