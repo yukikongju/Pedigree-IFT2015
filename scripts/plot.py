@@ -5,7 +5,8 @@ import numpy as np
 import pandas as pd
 
 def plotCoalescing():
-    file_path = "../data/coalescing.csv"
+    #  file_path = "../data/coalescing.csv"
+    file_path = "goy.csv"
     df = pd.read_csv(file_path)
     df = df.sort_values(by = 'time') # TO FIX: check condition
     females = df.loc[df['sex'] == 'F'] # df of females
@@ -31,6 +32,7 @@ def plotPopulationGrowth():
 
 def plotCoalescingAndPopulation():
     file_coalescing = "../data/coalescing.csv"
+    file_coalescing = "goy.csv"
     file_population = "../data/population.csv"
     df = pd.read_csv(file_coalescing)
     df = df.sort_values(by = 'time') # TO FIX: check condition
@@ -50,10 +52,8 @@ def plotCoalescingAndPopulation():
     plt.plot(xpopulation, ypopulation)
     plt.show()
 
-    pass
-
 if __name__ == "__main__":
-    plotCoalescing()
-    plotPopulationGrowth()
+    #  plotCoalescing()
+    #  plotPopulationGrowth()
     plotCoalescingAndPopulation()
 
