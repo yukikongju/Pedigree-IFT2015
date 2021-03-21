@@ -2,7 +2,6 @@ package pedigree;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.TreeMap;
 
 public class Main {
@@ -13,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // Simulate
         Simulation simulation = new Simulation();
-        simulation.simulate(1000, 20000); // n>=1000 ; Tmax>=10n
+        simulation.simulate(1000, 2000); // n>=1000 ; Tmax>=10n
         PQ<Sim> population = simulation.getPopulation();
         
         System.out.println(population.size());

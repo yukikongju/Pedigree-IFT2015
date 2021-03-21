@@ -34,19 +34,21 @@ public class Coalescing {
         System.out.println(males.size());
         
         // aieules
-        while(!females.isEmpty()){ // !females.isEmpty() // && !females.isOnlyFondators()
-            Sim sim = females.deleteMax(); // enlever le plus jeune
-            Sim mother = sim.getMother();
-            if(sim.isFounder()) break;
-            if(mother != null && !identification.contains(sim.getID())){ // !females.contains(mother)
-                females.insert(mother);
-                identification.add(sim.getID());
-            } else {
-                MA.put(sim.getBirthTime(), females.size());
-//                System.out.println(sim.getBirthTime()+ "," +  females.size());
-            }
-            
-        }
+//        while(!females.isEmpty()){ // !females.isEmpty() // && !females.isOnlyFondators()
+//            Sim sim = females.deleteMax(); // enlever le plus jeune
+//            Sim mother = sim.getMother();
+////            System.out.println(mother.getMother());
+////            if(sim.isFounder()) break;
+//            if(mother.isFounder()) break;
+//            if(mother != null && !identification.contains(sim.getID())){ // !females.contains(mother)
+//                females.insert(mother);
+//                identification.add(sim.getID());
+//            } else {
+//                MA.put(sim.getBirthTime(), females.size());
+////                System.out.println(sim.getBirthTime()+ "," +  females.size());
+//            }
+//            
+//        }
         
         // aieux
 //        while(!males.isEmpty()){

@@ -1,6 +1,5 @@
 package pedigree;
 
-import java.util.HashMap;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -11,7 +10,7 @@ public class Simulation {
     
     public static final int HUNDRED_YEARS = 100;
     
-    public static final double EPSILUM_HUNDRED_YEAR = 0.1; // error we are willing to accept when comparing time to hundred year
+//    public static final double EPSILUM_HUNDRED_YEAR = 0.1; // error we are willing to accept when comparing time to hundred year
     
     private PQ<Event> eventQ; // PQ<Event> is sorted chronologically by death 
     private PQ<Sim> population; // PQ<Sim> is sorted chronologically by death
@@ -20,7 +19,6 @@ public class Simulation {
     
 //    private HashMap<Double, Integer> populationGrowth;
     private TreeMap<Double, Integer> populationGrowth; // cannot use HashMap because it doesn't keep order. TreeMap insert is O(log n), which is not good. 
-
     
     public Simulation() { 
         ageModel = new AgeModel();
@@ -32,9 +30,8 @@ public class Simulation {
         // initialized PQ and hashMap inside simulate() instead of constructor in case we want to perform several simulations
         eventQ = new PQ<>();
         population = new PQ<>();
-//        populationGrowth = new HashMap<>();
         populationGrowth = new TreeMap<>();
-        
+
         double lastReportTime = 0;
         
         // generate first generation
@@ -118,8 +115,15 @@ public class Simulation {
             Event naissance = new Event(baby, E.getScheduledTime(), Event.EventType.BIRTH);
             eventQ.insert(naissance);
             
-            // Schedule next reproduction
-            Event reproduction = new Event(E.getSim(), E.getScheduledTime() + generateRandomWaitingTime(),
+//            double reproductionWaitingTime = generateRandomWaitingTime();
+//            Event reproduction = new Event(E.getSim(), E.getScheduledTime() + reproductionWaitingTime,
+//                Event.EventType.REPRODUCTION); 
+//            eventQ.insert(reproduction);
+        }
+        // Schedule next reproduction if mom isn't dead by then
+        double reproductionWaitingTime = generateRandomWaitingTime();
+        if(E.getSim().isMatingAge(reproductionWaitingTime + E.getScheduledTime())){ // VERIFY
+            Event reproduction = new Event(E.getSim(), E.getScheduledTime() + reproductionWaitingTime,
                 Event.EventType.REPRODUCTION); 
             eventQ.insert(reproduction);
         }

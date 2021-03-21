@@ -88,7 +88,7 @@ public class PQ <T extends Comparable<T>>{
     
     public T getRandomElement(Random random){ 
         if(isEmpty()) throw new IllegalArgumentException("HEAP IS EMPTY"); // VERIFY: should never go in this because we verify that heap not empty before calling
-        int index = random.nextInt(size()); 
+        int index = random.nextInt(size()-1); // TO VERIFY: 
         return heap[index];
     }
     
