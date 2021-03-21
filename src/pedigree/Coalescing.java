@@ -2,16 +2,17 @@ package pedigree;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeMap;
 
 public class Coalescing {
     
-    private HashMap<Double, Integer> PA; // coalescing points for males ancestors
-    private HashMap<Double, Integer> MA; // coalescing points for females ancestors
+    private TreeMap<Double, Integer> PA; // coalescing points for males ancestors
+    private TreeMap<Double, Integer> MA; // coalescing points for females ancestors
     
     public void coalesce(PQ<Sim> survivors) { // TO FIX
         // VERIFY: how can we ensure that lookups are O(1) and not O(n)
-        PA = new HashMap<>(); 
-        MA = new HashMap<>(); 
+        PA = new TreeMap<>(); 
+        MA = new TreeMap<>(); 
 
         // HashMap females and males
         HashSet<Integer> identification = new HashSet<>();
@@ -42,6 +43,7 @@ public class Coalescing {
                 identification.add(sim.getID());
             } else {
                 MA.put(sim.getBirthTime(), females.size());
+//                System.out.println(sim.getBirthTime()+ "," +  females.size());
             }
             
         }
@@ -98,11 +100,11 @@ public class Coalescing {
 //        System.out.println(aieules.size());
     }
 
-    public HashMap<Double, Integer> getAieules() {
+    public TreeMap<Double, Integer> getAieules() {
         return MA;
     }
 
-    public HashMap<Double, Integer> getAieux() {
+    public TreeMap<Double, Integer> getAieux() {
         return PA;
     }
     

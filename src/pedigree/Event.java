@@ -31,7 +31,7 @@ public class Event implements Comparable<Event> {
     }
 
     @Override
-    public int compareTo(Event t) { // PROBLEM: doesn't seem to work when element are double
+    public int compareTo(Event t) { 
         return Double.compare(this.scheduledTime, t.getScheduledTime());
     }
 

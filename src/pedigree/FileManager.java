@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class FileManager {
 
@@ -16,7 +17,7 @@ public class FileManager {
         this.directory = directory;
     }
 
-    public void generateCSVFileForCoalescingPoints(String fileName, HashMap<Double, Integer> aieux, HashMap<Double, Integer> aieules) throws IOException{
+    public void generateCSVFileForCoalescingPoints(String fileName, TreeMap<Double, Integer> aieux, TreeMap<Double, Integer> aieules) throws IOException{
         File file = new File(directory + fileName);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write("time,size,sex\n");
@@ -30,7 +31,10 @@ public class FileManager {
             writer.write(pair.getKey() + "," + pair.getValue() + "," + "F\n");
             iterMoms.remove(); // avoids concurrentModificationException
         }
-
+        
+        
+        
+        
         // add aieux to file
         Iterator iterDads = aieux.entrySet().iterator();
         while(iterDads.hasNext()){
@@ -42,7 +46,7 @@ public class FileManager {
         writer.close();
     }
     
-    public void generateCSVFileForPopulationGrowth(String fileName, HashMap<Double, Integer> populationGrowth) throws IOException{
+    public void generateCSVFileForPopulationGrowth(String fileName, TreeMap<Double, Integer> populationGrowth) throws IOException{
         File file = new File(directory + fileName);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write("time,size\n");

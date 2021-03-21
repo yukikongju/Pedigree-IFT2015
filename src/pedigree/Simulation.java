@@ -2,11 +2,14 @@ package pedigree;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.TreeMap;
 
 public class Simulation {
     
     public final Random RND; 
     public final double REPRODUCTION_RATE;
+    
+    public static final int HUNDRED_YEARS = 100;
     
     public static final double EPSILUM_HUNDRED_YEAR = 0.1; // error we are willing to accept when comparing time to hundred year
     
@@ -15,7 +18,9 @@ public class Simulation {
 //    private PriorityQueue<Event> eventQ; 
     private final AgeModel ageModel;
     
-    private HashMap<Double, Integer> populationGrowth;
+//    private HashMap<Double, Integer> populationGrowth;
+    private TreeMap<Double, Integer> populationGrowth; // cannot use HashMap because it doesn't keep order. TreeMap insert is O(log n), which is not good. 
+
     
     public Simulation() { 
         ageModel = new AgeModel();
@@ -27,10 +32,10 @@ public class Simulation {
         // initialized PQ and hashMap inside simulate() instead of constructor in case we want to perform several simulations
         eventQ = new PQ<>();
         population = new PQ<>();
-        populationGrowth = new HashMap<>();
+//        populationGrowth = new HashMap<>();
+        populationGrowth = new TreeMap<>();
         
         double lastReportTime = 0;
-        
         
         // generate first generation
         for(int i = 0; i<n; i++){
@@ -44,9 +49,10 @@ public class Simulation {
             Event E = (Event) eventQ.deleteMin();
             
             // add checkpoints every 100 years
-            if(E.getScheduledTime() > lastReportTime+100){
+            if(E.getScheduledTime() > lastReportTime + HUNDRED_YEARS){
                 populationGrowth.put(E.getScheduledTime(), population.size());
                 lastReportTime = E.getScheduledTime();
+//                System.out.println(populationGrowth);
             }
             
             if(E.getScheduledTime() > Tmax) break; // arrêter à Tmax 
@@ -152,10 +158,10 @@ public class Simulation {
         return father;
     }
 
-    public HashMap<Double, Integer> getPopulationGrowth() {
+    public TreeMap<Double, Integer> getPopulationGrowth() {
         return populationGrowth;
     }
-
+    
     public PQ<Sim> getPopulation() {
         return population;
     }

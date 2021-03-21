@@ -3,6 +3,7 @@ package pedigree;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Main {
 
@@ -22,9 +23,10 @@ public class Main {
         coalescing.coalesce(population);
         
         // Fetch HashMap for "Etude Empirique"
-        HashMap<Double, Integer> populationGrowth = simulation.getPopulationGrowth();
-        HashMap<Double, Integer> aieux = coalescing.getAieux();
-        HashMap<Double, Integer> aieules = coalescing.getAieules();
+//        HashMap<Double, Integer> populationGrowth = simulation.getPopulationGrowth();
+        TreeMap<Double, Integer> populationGrowth = simulation.getPopulationGrowth();
+        TreeMap<Double, Integer> aieux = coalescing.getAieux();
+        TreeMap<Double, Integer> aieules = coalescing.getAieules();
         
 //        System.out.println(populationGrowth);
 

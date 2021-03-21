@@ -123,4 +123,8 @@ public class PQ <T extends Comparable<T>>{
         return heap;
     }
     
+    public T peek(){
+        return heap[0];
+    }
+    
 }
