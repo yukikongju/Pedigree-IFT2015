@@ -4,8 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -22,28 +20,30 @@ public class FileManager {
         File file = new File(directory + fileName);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write("time,size,sex\n");
-
-        // https://stackoverflow.com/questions/1066589/iterate-through-a-hashmap
-
+        
         // add aieules to file
+        System.out.println("Coalescing Points for Aieules");
         Iterator iterMoms = MA.entrySet().iterator();
         while(iterMoms.hasNext()){
             Map.Entry pair = (Map.Entry) iterMoms.next();
             writer.write(pair.getKey() + "," + pair.getValue() + "," + "F\n");
             iterMoms.remove(); // avoids concurrentModificationException
+            System.out.print("Time: " +pair.getKey() + " Size: " + pair.getValue()+ " F\n");
         }
-        
-//        Object[] keysPA = PA.keySet().toArray();
-//        Arrays.sort(keysPA); // we have to sort because hashset doesn't maintain order. TreeMap is nlogn vs this nlogn
+
+        System.out.println("");
         
         // add aieux to file
+        System.out.println("Coalescing Points for Aieux");
         Iterator iterDads = PA.entrySet().iterator();
         while(iterDads.hasNext()){
             Map.Entry pair = (Map.Entry) iterDads.next();
             writer.write(pair.getKey() + "," + pair.getValue() + "," + "M\n");
             iterDads.remove(); // avoids concurrentModificationException
+            System.out.print("Time: " +pair.getKey() + " Size: " + pair.getValue()+ " M\n");
         }
 
+        System.out.println("");
         writer.close();
     }
     
@@ -53,13 +53,16 @@ public class FileManager {
         writer.write("time,size\n");
         
         // add population growth to csv file
+        System.out.println("Population Growth");
         Iterator iterPopulation = populationGrowth.entrySet().iterator();
         while(iterPopulation.hasNext()){
             Map.Entry pair = (Map.Entry) iterPopulation.next();
             writer.write(pair.getKey() + "," + pair.getValue() + "\n");
             iterPopulation.remove(); // avoids concurrentModificationException
+            System.out.print("Time: " +pair.getKey() + " Size: " + pair.getValue()+ " \n");
+
         }
-        
+        System.out.println("");
         writer.close();
     }
 
