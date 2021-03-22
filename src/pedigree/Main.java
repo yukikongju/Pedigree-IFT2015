@@ -10,14 +10,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-//        if (args.length != 2) {
-//            System.out.println("Invalid numbers of arguments"); // java Simulation <n> <Tmax>
-//            System.exit(0);
-//        }
-//        int n = Integer.parseInt(args[0]);
-//        int Tmax = Integer.parseInt(args[1]);
-        int n = 1000;
-        int Tmax = 20000;
+        if (args.length != 2) {
+            System.out.println("Invalid numbers of arguments"); // java Simulation <n> <Tmax>
+            System.exit(0);
+        }
+        int n = Integer.parseInt(args[0]);
+        int Tmax = Integer.parseInt(args[1]);
+
         // Simulate
         Simulation simulation = new Simulation();
         simulation.simulate(n, Tmax); // n>=1000 ; Tmax>=10n
